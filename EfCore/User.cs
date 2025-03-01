@@ -77,6 +77,9 @@ namespace EfCore
         // Navigation Properties
 
         public ICollection<Work> AssignedTasks { get; set; } = new List<Work>();
+
+        public ICollection<WorkAttachment> workAttachments { get; set; } = new List<WorkAttachment>();
+
         public ICollection<TeamMember> TeamMembers { get; set; } = new List<TeamMember>();
         public ICollection<PullRequest> PullRequests { get; set; } = new List<PullRequest>();
         public ICollection<WorkComment> Comments { get; set; } = new List<WorkComment>();

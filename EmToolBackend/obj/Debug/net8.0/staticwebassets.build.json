@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "fzRSHfnVmjnNAvTpxEJMvo1SN/ATGGP7+cX30fqhzBs=",
+  "Source": "EmToolBackend",
+  "BasePath": "_content/EmToolBackend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

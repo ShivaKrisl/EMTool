@@ -49,13 +49,13 @@ namespace EfCore
                 .HasOne(tm => tm.User)
                 .WithMany(u => u.TeamMembers)
                 .HasForeignKey(tm => tm.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<TeamMember>()
                 .HasOne(tm => tm.Team)
                 .WithMany(t => t.TeamMembers)
                 .HasForeignKey(tm => tm.TeamId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Work>()
                 .HasOne(t => t.Assignee)
@@ -67,54 +67,66 @@ namespace EfCore
                 .HasOne(tc => tc.Task)
                 .WithMany(t => t.Comments)
                 .HasForeignKey(tc => tc.TaskId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<WorkAttachment>()
                 .HasOne(ta => ta.Task)
-                .WithMany(t => t.Attachments)
+                .WithMany(t => t.Attachments) // Ensure Work has a collection: public ICollection<WorkAttachment> Attachments { get; set; }
                 .HasForeignKey(ta => ta.TaskId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<WorkAttachment>()
+                .HasOne(ta => ta.User)
+                .WithMany(u => u.workAttachments) // Ensure User has a collection: public ICollection<WorkAttachment> Attachments { get; set; }
+                .HasForeignKey(ta => ta.UserId)
+                .OnDelete(DeleteBehavior.Restrict); // Fix the typo
 
             modelBuilder.Entity<PullRequest>()
                 .HasOne(pr => pr.Task)
                 .WithMany(t => t.PullRequests)
                 .HasForeignKey(pr => pr.TaskId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict); 
+
+            modelBuilder.Entity<PullRequest>()
+                .HasMany(pr => pr.Reviews)
+                .WithOne(r => r.PullRequest)
+                .HasForeignKey(r => r.PullRequestId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Review>()
-                .HasOne(r => r.PullRequest)
-                .WithMany(pr => pr.Reviews)
-                .HasForeignKey(r => r.PullRequestId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(r => r.Reviewer)
+                .WithMany(u => u.ReviewsGiven)
+                .HasForeignKey(r => r.ReviewerId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Notification>()
                 .HasOne(n => n.User)
                 .WithMany(u => u.Notifications)
                 .HasForeignKey(n => n.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ScrumMeeting>()
                 .HasOne(sm => sm.Team)
                 .WithMany(t => t.ScrumMeetings)
                 .HasForeignKey(sm => sm.TeamId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ScrumAttendance>()
                 .HasOne(sa => sa.ScrumMeeting)
                 .WithMany(sm => sm.ScrumAttendances)
                 .HasForeignKey(sa => sa.MeetingId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ScrumAttendance>()
                 .HasOne(sa => sa.User)
                 .WithMany(u => u.ScrumAttendances)
                 .HasForeignKey(sa => sa.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict); // Prevents deleting Users with Attendance records
 
             modelBuilder.Entity<Report>()
                 .HasOne(r => r.SubmittedBy)
                 .WithMany(u => u.SubmittedReports)
-                .HasForeignKey(r => r.SubmittedBy)
+                .HasForeignKey(r => r.SubmittedById)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Report>()
