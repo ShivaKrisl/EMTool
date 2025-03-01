@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35728.132 d17.12
+VisualStudioVersion = 17.12.35728.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmToolBackend", "EmToolBackend.csproj", "{5FF31686-F2BA-4180-B3AB-C9786E6D9382}"
 EndProject
@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTOs", "..\DTOs\DTOs.csproj", "{30CB2732-F407-49A1-A1C2-D8BD1AF4C3BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service_Contracts", "..\Service_Contracts\Service_Contracts.csproj", "{3885009B-ECC6-4387-9F14-82EF88EE629D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +30,14 @@ Global
 		{E4DFAB91-6777-4A30-8C47-B6221E600DE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4DFAB91-6777-4A30-8C47-B6221E600DE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4DFAB91-6777-4A30-8C47-B6221E600DE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30CB2732-F407-49A1-A1C2-D8BD1AF4C3BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30CB2732-F407-49A1-A1C2-D8BD1AF4C3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30CB2732-F407-49A1-A1C2-D8BD1AF4C3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30CB2732-F407-49A1-A1C2-D8BD1AF4C3BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3885009B-ECC6-4387-9F14-82EF88EE629D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3885009B-ECC6-4387-9F14-82EF88EE629D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3885009B-ECC6-4387-9F14-82EF88EE629D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3885009B-ECC6-4387-9F14-82EF88EE629D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
