@@ -1,26 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EfCore
 {
-    public class TeamMembers
+    public class WorkComment
     {
         /// <summary>
-        /// Team Members Id
+        /// Comment Id
         /// </summary>
         [Key]
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Team Id
+        /// Task Id
         /// </summary>
         [Required]
-        public Guid TeamId { get; set; }
+        public Guid TaskId { get; set; }
 
         /// <summary>
         /// User Id
@@ -28,20 +25,23 @@ namespace EfCore
         [Required]
         public Guid UserId { get; set; }
 
+        /// <summary>
+        /// Comment
+        /// </summary>
+        [Required]
+        public string Comment { get; set; }  // Fixed nullable issue
+
+        /// <summary>
+        /// Commented On
+        /// </summary>
+        [Required]
+        public DateTime CommentedOn { get; set; } = DateTime.UtcNow;  // Use UTC time
+
         // Navigation Properties
+        [ForeignKey("TaskId")]
+        public Work Task { get; set; }  // Renamed to avoid conflict
 
-        /// <summary>
-        /// Team
-        /// </summary>
-        [ForeignKey("TeamId")]
-        public Teams teams { get; set; }
-
-        /// <summary>
-        /// User
-        /// </summary>
         [ForeignKey("UserId")]
-        public Users users { get; set; }
-
-
+        public User User { get; set; }
     }
 }

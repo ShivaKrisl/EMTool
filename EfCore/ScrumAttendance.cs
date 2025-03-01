@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,19 +23,23 @@ namespace EfCore
         /// </summary>
         [Required]
         public Guid UserId { get; set; }
+
+        /// <summary>
+        /// Indicates if the user was present in the meeting
+        /// </summary>
         public bool IsPresent { get; set; } = false;
 
         /// <summary>
-        /// Scrum meetings notes (remarks)
+        /// Scrum meeting notes (remarks)
         /// </summary>
         public string? Notes { get; set; }
 
         // Navigation Properties
 
         [ForeignKey("MeetingId")]
-        public ScrumMeetings scrumMeeting { get; set; }
+        public ScrumMeeting ScrumMeeting { get; set; }
 
         [ForeignKey("UserId")]
-        public Users user { get; set; }
+        public User User { get; set; }
     }
 }

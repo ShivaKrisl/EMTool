@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EfCore
 {
-    public class Teams
+    public class Team
     {
         /// <summary>
         ///  Team Id
@@ -21,7 +18,7 @@ namespace EfCore
         /// </summary>
         [Required]
         [MaxLength(100)]
-        public string? TeamName { get; set; }
+        public string TeamName { get; set; }  // Removed nullable (?)
 
         /// <summary>
         /// Team Manager Id
@@ -35,17 +32,16 @@ namespace EfCore
         /// Team Manager
         /// </summary>
         [ForeignKey("ManagerId")]
-        public Users Manager { get; set; }
+        public User Manager { get; set; }
 
         /// <summary>
         /// Team Members
         /// </summary>
-        public ICollection<TeamMembers> TeamMembers { get; set; } = new List<TeamMembers>();
+        public ICollection<TeamMember> TeamMembers { get; set; } = new List<TeamMember>();
 
         /// <summary>
         /// Team Meetings
         /// </summary>
-        public ICollection<ScrumMeetings> ScrumMeetings { get; set; } = new List<ScrumMeetings>();
+        public ICollection<ScrumMeeting> ScrumMeetings { get; set; } = new List<ScrumMeeting>();
     }
-
 }

@@ -9,7 +9,7 @@ using System.Data;
 
 namespace EfCore
 {
-    public class Users
+    public class User
     {
         /// <summary>
         /// Employee Id
@@ -61,7 +61,7 @@ namespace EfCore
         /// Employee Role
         /// </summary>
         [ForeignKey("RoleId")]
-        public Roles Role { get; set; }
+        public Role Role { get; set; }
 
         /// <summary>
         /// Employee Created At Date
@@ -76,17 +76,17 @@ namespace EfCore
 
         // Navigation Properties
 
-        public ICollection<Tasks> AssignedTasks { get; set; } = new List<Tasks>();
-        public ICollection<TeamMembers> TeamMembers { get; set; } = new List<TeamMembers>();
-        public ICollection<PullRequests> PullRequests { get; set; } = new List<PullRequests>();
-        public ICollection<TaskComments> Comments { get; set; } = new List<TaskComments>();
-        public ICollection<Reviews> ReviewsGiven { get; set; } = new List<Reviews>();
-        public ICollection<Reviews> ReviewsReceived { get; set; } = new List<Reviews>();
-        public ICollection<Notifications> Notifications { get; set; } = new List<Notifications>();
+        public ICollection<Work> AssignedTasks { get; set; } = new List<Work>();
+        public ICollection<TeamMember> TeamMembers { get; set; } = new List<TeamMember>();
+        public ICollection<PullRequest> PullRequests { get; set; } = new List<PullRequest>();
+        public ICollection<WorkComment> Comments { get; set; } = new List<WorkComment>();
+        public ICollection<Review> ReviewsGiven { get; set; } = new List<Review>();
+        public ICollection<Review> ReviewsReceived { get; set; } = new List<Review>();
+        public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
         public ICollection<ScrumAttendance> ScrumAttendances { get; set; } = new List<ScrumAttendance>();
-        public ICollection<Reports> SubmittedReports { get; set; } = new List<Reports>();
-        public ICollection<Reports> ReceivedReports { get; set; } = new List<Reports>();
+        public ICollection<Report> SubmittedReports { get; set; } = new List<Report>();
+        public ICollection<Report> ReceivedReports { get; set; } = new List<Report>();
 
-        public ICollection<Teams> ManagedTeams { get; set; } = new List<Teams>();
+        public ICollection<Team> ManagedTeams { get; set; } = new List<Team>();
     }
 }

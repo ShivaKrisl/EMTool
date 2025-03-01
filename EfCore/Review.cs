@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EfCore
 {
-    public class Reviews
+    public class Review
     {
         /// <summary>
         /// Review Id
@@ -20,37 +16,37 @@ namespace EfCore
         /// Pull Request Id
         /// </summary>
         [Required]
-        public Guid PRId { get; set; }
+        public Guid PullRequestId { get; set; }
 
         /// <summary>
-        /// User Reviewer Id (Employee Id) who review the pull request
+        /// Reviewer Id (Employee Id) who reviewed the pull request
         /// </summary>
         [Required]
-        public Guid UserReviewerId { get; set; }
+        public Guid ReviewerId { get; set; }
 
         /// <summary>
         /// Review Status (Approved/Rejected)
         /// </summary>
         [Required]
+        [MaxLength(20)]
         public string ReviewStatus { get; set; }
 
         /// <summary>
         /// Review Comments
         /// </summary>
-        [Required]
-        public string ReviewComments { get; set; }
+        public string? ReviewComments { get; set; }
 
         /// <summary>
         /// Review Date
         /// </summary>
-        public DateTime ReviewDate { get; set; } = DateTime.Now;
+        public DateTime ReviewDate { get; set; } = DateTime.UtcNow;
 
         // Navigation Properties
 
-        [ForeignKey("PRId")]    
-        public PullRequests pullRequests { get; set; }
+        [ForeignKey("PullRequestId")]
+        public PullRequest PullRequest { get; set; }
 
-        [ForeignKey("UserReviewerId")]
-        public Users users { get; set; }
+        [ForeignKey("ReviewerId")]
+        public User Reviewer { get; set; }
     }
 }

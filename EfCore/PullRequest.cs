@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EfCore
 {
-    public class PullRequests
+    public class PullRequest
     {
         /// <summary>
         /// Pull Request Id
@@ -17,19 +14,19 @@ namespace EfCore
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Task Id to which pull request is created
+        /// Task Id to which the pull request is linked
         /// </summary>
         [Required]
         public Guid TaskId { get; set; }
 
         /// <summary>
-        /// User Id who created the pull request
+        /// User who created the pull request
         /// </summary>
         [Required]
-        public Guid UserId { get; set; }
+        public Guid CreatedById { get; set; }
 
         /// <summary>
-        /// Pull Request Url
+        /// Pull Request URL
         /// </summary>
         [Required]
         [Url]
@@ -38,35 +35,36 @@ namespace EfCore
         /// <summary>
         /// Pull Request Description
         /// </summary>
-        [Required]
+        [MaxLength(2000)] // Set a reasonable max length
         public string? PRDescription { get; set; }
 
         /// <summary>
-        /// Pull Request explanation Attachement Path
+        /// Path for PR explanation attachment
         /// </summary>
         [Required]
-        public string AttachementPath { get; set; }
+        public string AttachmentPath { get; set; }
 
         /// <summary>
         /// Pull Request Status
         /// </summary>
         [Required]
+        [MaxLength(50)] // Limit status length (e.g., "Pending", "Approved", "Rejected")
         public string PRStatus { get; set; }
 
         /// <summary>
-        /// Pull Request Created At
+        /// Timestamp when PR was created
         /// </summary>
         [Required]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation Properties
 
         [ForeignKey("TaskId")]
-        public Tasks task { get; set; }
+        public Work Task { get; set; }
 
-        [ForeignKey("UserId")]
-        public Users user { get; set; }
+        [ForeignKey("CreatedById")]
+        public User CreatedBy { get; set; }
 
-        public ICollection<Reviews> reviews { get; set; }
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

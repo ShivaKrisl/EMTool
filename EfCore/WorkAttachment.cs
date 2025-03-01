@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EfCore
 {
-    public class TaskAttachments
+    public class WorkAttachment
     {
         /// <summary>
-        /// Task Attachement Id
+        /// Task Attachment Id
         /// </summary>
         [Key]
         public Guid Id { get; set; }
@@ -44,20 +40,19 @@ namespace EfCore
         /// File Type
         /// </summary>
         [Required]
-        public string? FileType { get; set; }
+        public string FileType { get; set; }
 
         /// <summary>
-        /// File Size
+        /// Attachment Created At Timestamp
         /// </summary>
         [Required]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation Properties
-
         [ForeignKey("TaskId")]
-        public Tasks tasks { get; set; }
+        public Work Task { get; set; }
 
         [ForeignKey("UserId")]
-        public Users users { get; set; }
+        public User User { get; set; }
     }
 }

@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EfCore
 {
-    public class ScrumMeetings
+    public class ScrumMeeting
     {
         /// <summary>
         /// Id of Scrum Meeting
@@ -17,7 +14,7 @@ namespace EfCore
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Date of Scrum Meeting
+        /// Id of the Team conducting the Scrum Meeting
         /// </summary>
         [Required]
         public Guid TeamId { get; set; }
@@ -43,8 +40,8 @@ namespace EfCore
         // Navigation Properties
 
         [ForeignKey("TeamId")]
-        public Teams team { get; set; }
+        public Team Team { get; set; }
 
-        public ICollection<ScrumAttendance> scrumAttendances { get; set; } = new List<ScrumAttendance>();
+        public ICollection<ScrumAttendance> ScrumAttendances { get; set; } = new List<ScrumAttendance>();
     }
 }

@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EfCore
 {
-    public class Tasks
+    public class Work
     {
         /// <summary>
         /// Task Id
@@ -30,7 +27,7 @@ namespace EfCore
         public string Description { get; set; }
 
         /// <summary>
-        /// Task assigned by Id (Manager Id
+        /// Task assigned by Id (Manager Id)
         /// </summary>
         [Required]
         public Guid AssignedBy { get; set; }
@@ -50,7 +47,8 @@ namespace EfCore
         /// <summary>
         /// Task Status
         /// </summary>
-        public string TaskStatus { get; set; }
+        [Required]
+        public string Status { get; set; }
 
         /// <summary>
         /// Task deadline
@@ -61,19 +59,19 @@ namespace EfCore
         /// <summary>
         /// Task Created At
         /// </summary>
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation Properties
-
         [ForeignKey("AssignedBy")]
-        public Users Assigner { get; set; }
+        public User Assigner { get; set; }
 
         [ForeignKey("AssignedTo")]
-        public Users Assignee { get; set; }
-        public ICollection<TaskComments> Comments { get; set; } = new List<TaskComments>();
-        public ICollection<TaskAttachments> Attachments { get; set; } = new List<TaskAttachments>();
-        public ICollection<PullRequests> PullRequests { get; set; } = new List<PullRequests>();
+        public User Assignee { get; set; }
 
-
+        public ICollection<WorkComment> Comments { get; set; } = new List<WorkComment>();
+        public ICollection<WorkAttachment> Attachments { get; set; } = new List<WorkAttachment>();
+        public ICollection<PullRequest> PullRequests { get; set; } = new List<PullRequest>();
     }
+
+    
 }

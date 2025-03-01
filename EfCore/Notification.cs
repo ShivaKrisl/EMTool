@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EfCore
 {
-    public class Notifications
+    public class Notification
     {
         /// <summary>
         /// Notification Id
@@ -25,18 +22,20 @@ namespace EfCore
         /// Notification Message
         /// </summary>
         [Required]
+        [MaxLength(500)] // Limit to prevent excessive message size
         public string NotificationMessage { get; set; }
 
         /// <summary>
         /// Notification Created Date
         /// </summary>
         [Required]
-        public DateTime NotificationCreatedDate { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         /// <summary>
         /// Notification Type (TaskAdded/TaskUpdated/PRApproved/PRRejected)
         /// </summary>
         [Required]
+        [MaxLength(50)] // Prevent long and unnecessary values
         public string NotificationType { get; set; }
 
         /// <summary>
@@ -44,10 +43,8 @@ namespace EfCore
         /// </summary>
         public bool IsRead { get; set; } = false;
 
-        // Navigation Properties
-
+        // Navigation Property
         [ForeignKey("UserId")]
-        public Users user { get; set; }
-
+        public User User { get; set; }
     }
 }

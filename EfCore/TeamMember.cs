@@ -1,26 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EfCore
 {
-    public class TaskComments
+    public class TeamMember
     {
         /// <summary>
-        /// Comment Id
+        /// Team Members Id
         /// </summary>
         [Key]
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Task Id
+        /// Team Id
         /// </summary>
         [Required]
-        public Guid TaskId { get; set; }
+        public Guid TeamId { get; set; }
 
         /// <summary>
         /// User Id
@@ -28,23 +24,18 @@ namespace EfCore
         [Required]
         public Guid UserId { get; set; }
 
-        /// <summary>
-        /// Comment
-        /// </summary>
-        [Required]
-        public string? Comment { get; set; }
-
-        /// <summary>
-        /// Commented On
-        /// </summary>
-        [Required]
-        public DateTime CommentedOn { get; set; } = DateTime.Now;
-
         // Navigation Properties
-        [ForeignKey("TaskId")]
-        public Tasks Task { get; set; }
 
+        /// <summary>
+        /// Team
+        /// </summary>
+        [ForeignKey("TeamId")]
+        public Team Team { get; set; }
+
+        /// <summary>
+        /// User
+        /// </summary>
         [ForeignKey("UserId")]
-        public Users User { get; set; }
+        public User User { get; set; }
     }
 }

@@ -1,207 +1,127 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace EfCore
 {
     public class EMDbContext : DbContext
     {
-        /// <summary>
-        /// Employees Table
-        /// </summary>
-        public DbSet<Users> users { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<TeamMember> TeamMembers { get; set; }
+        public DbSet<Work> Tasks { get; set; }
+        public DbSet<WorkComment> TaskComments { get; set; }
+        public DbSet<WorkAttachment> TaskAttachments { get; set; }
+        public DbSet<PullRequest> PullRequests { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<ScrumMeeting> ScrumMeetings { get; set; }
+        public DbSet<ScrumAttendance> ScrumAttendances { get; set; }
+        public DbSet<Report> Reports { get; set; }
 
-        /// <summary>
-        /// Roles Table that describe role of employee
-        /// </summary>
-        public DbSet<Roles> roles { get; set; }
+        public EMDbContext(DbContextOptions<EMDbContext> options) : base(options) { }
 
-        /// <summary>
-        /// Teams Table that describe team of employees
-        /// </summary>
-        public DbSet<Teams> teams { get; set; }
-
-        /// <summary>
-        /// Team Members Table that describe mapping of employees and teams
-        /// </summary>
-        public DbSet<TeamMembers> teamMembers { get; set; }
-
-        /// <summary>
-        /// Tasks Table that describe tasks of employees
-        /// </summary>
-        public DbSet<Tasks> tasks { get; set; }
-
-        /// <summary>
-        /// Task Comments Table that describe comments of tasks
-        /// </summary>
-        public DbSet<TaskComments> tasksComments { get; set; }
-
-        /// <summary>
-        /// Task Attachments Table that describe attachments of tasks
-        /// </summary>
-        public DbSet<TaskAttachments> taskAttachments { get; set; }
-
-        /// <summary>
-        /// Pull Requests Table that describe pull requests of tasks
-        /// </summary>
-        public DbSet<PullRequests> pullRequests { get; set; }
-
-        /// <summary>
-        /// Reviews Table that describe reviews of Pull Requests
-        /// </summary>
-        public DbSet<Reviews> reviews { get; set; }
-
-        /// <summary>
-        /// Notifications Table that describe notifications of employees when task is added or changed
-        /// </summary>
-        public DbSet<Notifications> notifications { get; set; }
-
-        /// <summary>
-        /// Scrum Meetings Table that describe scrum meetings of teams
-        /// </summary>
-        public DbSet<ScrumMeetings> scrumMeetings { get; set; }
-
-        /// <summary>
-        /// Scrum Attendance Table that tracks attendance of employees in scrum meetings
-        /// </summary>
-        public DbSet<ScrumAttendance> scrumAttendances { get; set; }
-
-        /// <summary>
-        /// Reports Table that describe reports of employees to their managers
-        /// </summary>
-        public DbSet<Reports> reports { get; set; }
-
-        /// <summary>
-        /// Constructor of EMDbContext
-        /// </summary>
-        /// <param name="dbContextOptions"></param>
-        public EMDbContext(DbContextOptions<EMDbContext> dbContextOptions) : base(dbContextOptions)
-        {
-        }
-
-        /// <summary>
-        /// OnModelCreating method that is used to define relationships between tables
-        /// </summary>
-        /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Define table names
-            modelBuilder.Entity<Users>().ToTable("Users");
-            modelBuilder.Entity<Roles>().ToTable("Roles");
-            modelBuilder.Entity<Teams>().ToTable("Teams");
-            modelBuilder.Entity<TeamMembers>().ToTable("TeamMembers");
-            modelBuilder.Entity<Tasks>().ToTable("Tasks");
-            modelBuilder.Entity<TaskComments>().ToTable("TaskComments");
-            modelBuilder.Entity<TaskAttachments>().ToTable("TaskAttachments");
-            modelBuilder.Entity<PullRequests>().ToTable("PullRequests");
-            modelBuilder.Entity<Reviews>().ToTable("Reviews");
-            modelBuilder.Entity<Notifications>().ToTable("Notifications");
-            modelBuilder.Entity<ScrumMeetings>().ToTable("ScrumMeetings");
+            // Explicitly setting table names
+            modelBuilder.Entity<User>().ToTable("Users");
+            modelBuilder.Entity<Role>().ToTable("Roles");
+            modelBuilder.Entity<Team>().ToTable("Teams");
+            modelBuilder.Entity<TeamMember>().ToTable("TeamMembers");
+            modelBuilder.Entity<Work>().ToTable("Tasks");
+            modelBuilder.Entity<WorkComment>().ToTable("TaskComments");
+            modelBuilder.Entity<WorkAttachment>().ToTable("TaskAttachments");
+            modelBuilder.Entity<PullRequest>().ToTable("PullRequests");
+            modelBuilder.Entity<Review>().ToTable("Reviews");
+            modelBuilder.Entity<Notification>().ToTable("Notifications");
+            modelBuilder.Entity<ScrumMeeting>().ToTable("ScrumMeetings");
             modelBuilder.Entity<ScrumAttendance>().ToTable("ScrumAttendance");
-            modelBuilder.Entity<Reports>().ToTable("Reports");
+            modelBuilder.Entity<Report>().ToTable("Reports");
 
-            // Users & Roles (One-to-Many)
-            modelBuilder.Entity<Users>()
+            // Relationships
+            modelBuilder.Entity<User>()
                 .HasOne(u => u.Role)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Users & Teams (One-to-Many via TeamMembers)
-            modelBuilder.Entity<TeamMembers>()
-                .HasOne(tm => tm.users)
+            modelBuilder.Entity<TeamMember>()
+                .HasOne(tm => tm.User)
                 .WithMany(u => u.TeamMembers)
                 .HasForeignKey(tm => tm.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<TeamMembers>()
-                .HasOne(tm => tm.teams)
+            modelBuilder.Entity<TeamMember>()
+                .HasOne(tm => tm.Team)
                 .WithMany(t => t.TeamMembers)
                 .HasForeignKey(tm => tm.TeamId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Tasks & Users (One-to-Many: Assigned to a user)
-            modelBuilder.Entity<Tasks>()
+            modelBuilder.Entity<Work>()
                 .HasOne(t => t.Assignee)
                 .WithMany(u => u.AssignedTasks)
                 .HasForeignKey(t => t.AssignedTo)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Task Comments & Tasks (One-to-Many)
-            modelBuilder.Entity<TaskComments>()
+            modelBuilder.Entity<WorkComment>()
                 .HasOne(tc => tc.Task)
                 .WithMany(t => t.Comments)
                 .HasForeignKey(tc => tc.TaskId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Task Attachments & Tasks (One-to-Many)
-            modelBuilder.Entity<TaskAttachments>()
-                .HasOne(ta => ta.tasks)
+            modelBuilder.Entity<WorkAttachment>()
+                .HasOne(ta => ta.Task)
                 .WithMany(t => t.Attachments)
                 .HasForeignKey(ta => ta.TaskId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Pull Requests & Tasks (One-to-Many)
-            modelBuilder.Entity<PullRequests>()
-                .HasOne(pr => pr.task)
+            modelBuilder.Entity<PullRequest>()
+                .HasOne(pr => pr.Task)
                 .WithMany(t => t.PullRequests)
                 .HasForeignKey(pr => pr.TaskId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Reviews & PRs (One-to-Many)
-            modelBuilder.Entity<Reviews>()
-                .HasOne(r => r.pullRequests)
-                .WithMany(pr => pr.reviews)
-                .HasForeignKey(r => r.PRId)
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.PullRequest)
+                .WithMany(pr => pr.Reviews)
+                .HasForeignKey(r => r.PullRequestId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Notifications & Users (One-to-Many)
-            modelBuilder.Entity<Notifications>()
-                .HasOne(n => n.user)
+            modelBuilder.Entity<Notification>()
+                .HasOne(n => n.User)
                 .WithMany(u => u.Notifications)
                 .HasForeignKey(n => n.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Scrum Meetings & Teams (One-to-Many)
-            modelBuilder.Entity<ScrumMeetings>()
-                .HasOne(sm => sm.team)
+            modelBuilder.Entity<ScrumMeeting>()
+                .HasOne(sm => sm.Team)
                 .WithMany(t => t.ScrumMeetings)
                 .HasForeignKey(sm => sm.TeamId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Scrum Attendance & Scrum Meetings (One-to-Many)
             modelBuilder.Entity<ScrumAttendance>()
-                .HasOne(sa => sa.scrumMeeting)
-                .WithMany(sm => sm.scrumAttendances)
+                .HasOne(sa => sa.ScrumMeeting)
+                .WithMany(sm => sm.ScrumAttendances)
                 .HasForeignKey(sa => sa.MeetingId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Scrum Attendance & Users (One-to-Many)
             modelBuilder.Entity<ScrumAttendance>()
-                .HasOne(sa => sa.user)
+                .HasOne(sa => sa.User)
                 .WithMany(u => u.ScrumAttendances)
                 .HasForeignKey(sa => sa.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Reports & Users (One-to-Many)
-            modelBuilder.Entity<Reports>()
-                .HasOne(r => r.Employee)
+            modelBuilder.Entity<Report>()
+                .HasOne(r => r.SubmittedBy)
                 .WithMany(u => u.SubmittedReports)
-                .HasForeignKey(r => r.EmployeeId)
+                .HasForeignKey(r => r.SubmittedBy)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Reports>()
-                .HasOne(r => r.Manager)
+            modelBuilder.Entity<Report>()
+                .HasOne(r => r.ReviewedBy)
                 .WithMany(u => u.ReceivedReports)
-                .HasForeignKey(r => r.ManagerId)
+                .HasForeignKey(r => r.ReviewedById)
                 .OnDelete(DeleteBehavior.Restrict);
         }
-
-
-
     }
 }
