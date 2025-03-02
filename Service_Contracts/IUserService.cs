@@ -29,14 +29,21 @@ namespace Service_Contracts
         /// Get all employees
         /// </summary>
         /// <returns></returns>
-        public Task<List<UserResponse>>? GetAllEmployees();
+        public Task<List<UserResponse>> GetAllEmployees();
 
         /// <summary>
         /// Get Employee by username
         /// </summary>
         /// <param name="employeeUserName"></param>
         /// <returns></returns>
-        public Task<List<UserResponse>>? GetEmployeeByUserName(string? employeeUserName);
+        public Task<List<UserResponse>> GetEmployeeByUserName(string? employeeUserName);
+
+        /// <summary>
+        /// Get Employee by Id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public Task<UserResponse> GetEmployeeById(Guid userId);
 
         /// <summary>
         /// Update Employee details

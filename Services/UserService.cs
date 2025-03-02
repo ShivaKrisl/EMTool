@@ -116,7 +116,7 @@ namespace Services
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<List<UserResponse>>? GetAllEmployees()
+        public Task<List<UserResponse>> GetAllEmployees()
         {
             if(_users == null)
             {
@@ -131,7 +131,7 @@ namespace Services
         /// <param name="employeeUserName"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<List<UserResponse>>? GetEmployeeByUserName(string? employeeUserName)
+        public Task<List<UserResponse>> GetEmployeeByUserName(string? employeeUserName)
         {
             if (string.IsNullOrEmpty(employeeUserName))
             {
@@ -148,6 +148,27 @@ namespace Services
             List<UserResponse> userResponses = filteredUsers.Select(u => u.ToUserResponse()).ToList();
 
             return Task.FromResult(userResponses);
+        }
+
+        /// <summary>
+        /// Get employee by Id
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public Task<UserResponse> GetEmployeeById(Guid UserId)
+        {
+            if (UserId == Guid.Empty)
+            {
+                throw new ArgumentException("Invalid User ID", nameof(UserId));
+            }
+
+            User? user = _users.FirstOrDefault(u => u.Id == UserId);
+            if (user == null)
+            {
+                return Task.FromResult(new UserResponse());
+            }
+            return Task.FromResult(user.ToUserResponse());
         }
 
         /// <summary>
@@ -179,7 +200,8 @@ namespace Services
             userToUpdate.FirstName = userRequest.FirstName;
             userToUpdate.LastName = userRequest.LastName;
             userToUpdate.Username = userRequest.Username;
-     
+            userToUpdate.UpdatedAt = DateTime.UtcNow;
+
             return Task.FromResult(userToUpdate.ToUserResponse());
 
         }
@@ -202,7 +224,7 @@ namespace Services
 
             if(userToDelete == null)
             {
-                throw new ArgumentException("User not found");
+                return Task.FromResult(false);
             }
 
             _users.Remove(userToDelete);

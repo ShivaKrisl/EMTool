@@ -11,6 +11,9 @@ namespace DTOs.Users
     public class UserResponse
     {
         [Required]
+        public Guid Id { get; set; }
+
+        [Required]
         public string? FirstName { get; set; }
 
         [Required]
@@ -32,11 +35,24 @@ namespace DTOs.Users
         {
             return new UserResponse
             {
+                Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
                 Username = user.Username,
                 userRole = user.Role.Name
+            };
+        }
+
+        public static User ToUser(this UserResponse userResponse)
+        {
+            return new User
+            {
+                Id = userResponse.Id,
+                FirstName = userResponse.FirstName,
+                LastName = userResponse.LastName,
+                Email = userResponse.Email,
+                Username = userResponse.Username
             };
         }
     }

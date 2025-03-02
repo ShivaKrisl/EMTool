@@ -53,11 +53,6 @@ namespace DTOs.Tasks
         [Required]
         public DateTime Deadline { get; set; }
 
-        /// <summary>
-        /// Task Created At
-        /// </summary>
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
         public Work ToWork()
         {
             return new Work
@@ -69,7 +64,6 @@ namespace DTOs.Tasks
                 TeamId = TeamId,
                 Status = Status,
                 Deadline = Deadline,
-                CreatedAt = CreatedAt
             };
         }
     }

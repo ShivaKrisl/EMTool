@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DTOs.Users;
 using EfCore;
 
 namespace DTOs.Tasks
@@ -33,13 +34,13 @@ namespace DTOs.Tasks
         /// Task assigned by Id (Manager Id)
         /// </summary>
         [Required]
-        public Guid AssignedBy { get; set; }
+        public UserResponse AssignedBy { get; set; }
 
         /// <summary>
         /// Task assigned to Id (Employee Id)
         /// </summary>
         [Required]
-        public Guid AssignedTo { get; set; }
+        public UserResponse AssignedTo { get; set; }
 
         /// <summary>
         /// Team Id
@@ -60,22 +61,22 @@ namespace DTOs.Tasks
         public DateTime Deadline { get; set; }
 
         /// <summary>
-        /// Task Created At
+        /// Task created at
         /// </summary>
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
     }
 
     public static class WorkResponseExtensions
     {
-        public static WorkResponse ToWorkResponse(this Work work)
+        public static WorkResponse ToWorkResponse(this Work work, UserResponse assignedBy, UserResponse assignedTo)
         {
             return new WorkResponse
             {
                 Id = work.Id,
                 Title = work.Title,
                 Description = work.Description,
-                AssignedBy = work.AssignedBy,
-                AssignedTo = work.AssignedTo,
+                AssignedBy = assignedBy,
+                AssignedTo = assignedTo,
                 TeamId = work.TeamId,
                 Status = work.Status,
                 Deadline = work.Deadline,
