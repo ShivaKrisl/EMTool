@@ -41,6 +41,19 @@ namespace DTOs.TeamMembers
         [Required]
         public string TeamName { get; set; }
 
+        /// <summary>
+        /// Team 
+        /// </summary>
+        [Required]
+        public Team Team { get; set; }
+
+
+        /// <summary>
+        /// User 
+        /// </summary>
+        [Required]
+        public User User { get; set; }
+
     }
 
     public static class TeamMemberResponseExtensions
@@ -53,7 +66,9 @@ namespace DTOs.TeamMembers
                 TeamId = teamMember.TeamId,
                 UserId = teamMember.UserId,
                 UserName = teamMember.User.Username,
-                TeamName = teamMember.Team.TeamName
+                TeamName = teamMember.Team.TeamName,
+                Team = teamMember.Team,
+                User = teamMember.User,
             };
         }
 

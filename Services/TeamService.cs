@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EfCore;
 using DTOs.Users;
+using DTOs.Roles;
 
 namespace Services
 {
@@ -15,11 +16,13 @@ namespace Services
 
         private readonly List<Team> _teams;
         private readonly IUserService _userService;
+        private readonly RoleService _roleService;
 
         public TeamService()
         {
             _teams = new List<Team>();
             _userService = new UserService();
+            _roleService = new RoleService();
         }
 
         /// <summary>
@@ -51,6 +54,7 @@ namespace Services
 
             Team team = teamRequest.ToTeam();
             team.Id = Guid.NewGuid();
+
             UserResponse managerResponse = await _userService.GetEmployeeById(teamRequest.ManagerId);
             if (managerResponse == null)
             {
@@ -62,7 +66,12 @@ namespace Services
                 throw new ArgumentException("Only Manager can create a Team");
             }
 
-            User manager = managerResponse.ToUser();
+            RoleResponse? managerRole = await _roleService.GetRoleById(managerResponse.RoleId);
+            if (managerRole == null)
+            {
+                throw new ArgumentException("Manager not found");
+            }
+            User manager = managerResponse.ToUser(managerRole.ToRole());
             team.Manager = manager;
 
             // Save the team to the database
@@ -154,6 +163,11 @@ namespace Services
             if (team == null)
             {
                 throw new ArgumentException("Team not found");
+            }
+
+            if(team.Manager.Role.Name != UserRoles.Manager.ToString())
+            {
+                throw new ArgumentException("Only Manager can edit Team details");
             }
 
             team.TeamName = teamRequest.TeamName;

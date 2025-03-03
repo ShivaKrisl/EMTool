@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EfCore;
 using BCrypt.Net;
+using DTOs.Roles;
 
 namespace Services
 {
@@ -14,16 +15,12 @@ namespace Services
     {
 
         private readonly List<User> _users;
-        private readonly List<Role> _mockroles;
+        private readonly IRoleService _roleService;
 
         public UserService()
         {
             _users = new List<User>();
-            _mockroles= new List<Role>
-            {
-                new Role { Id = Guid.NewGuid(), Name = UserRoles.Manager.ToString() },
-                new Role { Id = Guid.NewGuid(), Name = UserRoles.Employee.ToString() }
-            };
+            _roleService = new RoleService();
         }
 
         /// <summary>
@@ -33,7 +30,7 @@ namespace Services
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
 
-        public Task<UserResponse> RegisterManager(UserRequest userRequest)
+        public async Task<UserResponse> RegisterManager(UserRequest userRequest)
         {
             if(userRequest == null)
             {
@@ -46,17 +43,37 @@ namespace Services
                 throw new ArgumentException("UserRequest is not valid");
             }
 
+            // Check Username already exists
+            if (_users.Any(u => u.Username == userRequest.Username))
+            {
+                throw new ArgumentException("Username already exists");
+            }
+
+            // Check Email already exists
+            if (_users.Any(u => u.Email == userRequest.Email))
+            {
+                throw new ArgumentException("Email already exists");
+            }
+
             User manager = userRequest.ToUser();
             manager.Id = Guid.NewGuid();
             manager.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userRequest.Password);
             // To verify use BCrypt.Net.BCrypt.Verify(userRequest.Password, hashedPassword)
-            
-            Role? ManagerRole = _mockroles.FirstOrDefault(r => r.Name == UserRoles.Manager.ToString());
+
+            RoleResponse? ManagerRole = await _roleService.GetRoleById(userRequest.RoleId);
+
             if (ManagerRole == null)
             {
-                throw new ArgumentException("Manager Role not found");
+                ManagerRole = await _roleService.CreateRole(new RoleRequest()
+                {
+                    Name = UserRoles.Manager.ToString()
+                });
             }
-            manager.Role = ManagerRole;
+            if(ManagerRole.Name != UserRoles.Manager.ToString())
+            {
+                throw new ArgumentException("Only Manager can create a Team");
+            }
+            manager.Role = ManagerRole.ToRole();
             manager.RoleId = ManagerRole.Id;
             manager.CreatedAt = DateTime.UtcNow;
             manager.UpdatedAt = DateTime.UtcNow;
@@ -64,7 +81,7 @@ namespace Services
             // Save to database
             _users.Add(manager);
 
-            return Task.FromResult(manager.ToUserResponse());
+            return manager.ToUserResponse();
 
         }
 
@@ -74,7 +91,7 @@ namespace Services
         /// <param name="userRequest"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<UserResponse> RegisterEmployee(UserRequest userRequest)
+        public async Task<UserResponse> RegisterEmployee(UserRequest userRequest)
         {
             if (userRequest == null)
             {
@@ -87,19 +104,34 @@ namespace Services
                 throw new ArgumentException("UserRequest is not valid");
             }
 
+            // check user name already exists
+            if (_users.Any(u => u.Username == userRequest.Username))
+            {
+                throw new ArgumentException("Username already exists");
+            }
+
+            // check email already exists
+            if (_users.Any(u => u.Email == userRequest.Email))
+            {
+                throw new ArgumentException("Email already exists");
+            }
+
             User employee = userRequest.ToUser();
-            employee.Id = new Guid();
+            employee.Id = Guid.NewGuid();
             employee.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userRequest.Password);
             // To verify use BCrypt.Net.BCrypt.Verify(userRequest.Password, hashedPassword)
 
-            Role? employeeRole = _mockroles.FirstOrDefault(role => role.Name == UserRoles.Employee.ToString());
+            RoleResponse? employeeRole = await _roleService.GetRoleById(userRequest.RoleId);
 
-            if(employeeRole == null)
+            if (employeeRole == null)
             {
-                throw new ArgumentException("Employee Role not found");
+                employeeRole = await _roleService.CreateRole(new RoleRequest()
+                {
+                    Name = UserRoles.Employee.ToString()
+                });
             }
 
-            employee.Role = employeeRole;
+            employee.Role = employeeRole.ToRole();
             employee.RoleId = employeeRole.Id;
             employee.CreatedAt = DateTime.UtcNow;
             employee.UpdatedAt = DateTime.UtcNow;
@@ -107,7 +139,7 @@ namespace Services
             // Save to database
             _users.Add(employee);
 
-            return Task.FromResult(employee.ToUserResponse());
+            return employee.ToUserResponse();
 
         }
 
@@ -131,23 +163,23 @@ namespace Services
         /// <param name="employeeUserName"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<List<UserResponse>> GetEmployeeByUserName(string? employeeUserName)
+        public Task<UserResponse> GetEmployeeByUserName(string? employeeUserName)
         {
             if (string.IsNullOrEmpty(employeeUserName))
             {
-                return this.GetAllEmployees();
+                throw new ArgumentNullException(nameof(employeeUserName));
             }
 
-            List<User> filteredUsers = _users.Where(u => u.Username == employeeUserName).ToList();
+            User? filteredUser = _users.FirstOrDefault(u => u.Username == employeeUserName);
 
-            if (filteredUsers == null)
+            if (filteredUser == null)
             {
-                return Task.FromResult(new List<UserResponse>());
+                throw new ArgumentException("User not found");
             }
 
-            List<UserResponse> userResponses = filteredUsers.Select(u => u.ToUserResponse()).ToList();
+            UserResponse userResponse = filteredUser.ToUserResponse();
 
-            return Task.FromResult(userResponses);
+            return Task.FromResult(userResponse);
         }
 
         /// <summary>
@@ -177,7 +209,7 @@ namespace Services
         /// <param name="userRequest"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<UserResponse> UpdateEmployeeDetails(UserRequest userRequest)
+        public Task<UserResponse> UpdateEmployeeDetails(UserRequest userRequest, Guid userId)
         {
             if (userRequest == null)
             {
@@ -190,20 +222,32 @@ namespace Services
                 throw new ArgumentException("UserRequest is not valid");
             }
 
-            User? userToUpdate = _users.FirstOrDefault(u => u.Email == userRequest.Email);
+            User? userToUpdate = _users.FirstOrDefault(u => u.Id == userId);
 
             if (userToUpdate == null)
             {
                 throw new ArgumentException("User not found");
             }
 
+            // Check Username already exists
+            if (_users.Any(u => u.Username == userRequest.Username && u.Id != userId))
+            {
+                throw new ArgumentException("Username already exists");
+            }
+
+            // Check Email already exists
+            if (_users.Any(u => u.Email == userRequest.Email && u.Id != userId))
+            {
+                throw new ArgumentException("Email already exists");
+            }
+
             userToUpdate.FirstName = userRequest.FirstName;
-            userToUpdate.LastName = userRequest.LastName;
+            userToUpdate.Email = userRequest.Email;
             userToUpdate.Username = userRequest.Username;
+            userToUpdate.LastName = userRequest.LastName;
             userToUpdate.UpdatedAt = DateTime.UtcNow;
 
             return Task.FromResult(userToUpdate.ToUserResponse());
-
         }
 
         /// <summary>
@@ -226,7 +270,6 @@ namespace Services
             {
                 return Task.FromResult(false);
             }
-
             _users.Remove(userToDelete);
             return Task.FromResult(true);
         }

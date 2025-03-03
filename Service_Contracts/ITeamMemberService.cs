@@ -24,6 +24,13 @@ namespace Service_Contracts
         public Task<List<TeamMemberResponse>> GetAllTeamMembers(Guid teamId);
 
         /// <summary>
+        /// Get a team member by Id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public Task<TeamMemberResponse>? GetTeamMemberById(Guid userId);
+
+        /// <summary>
         /// Delete a team member
         /// </summary>
         /// <param name="teamMemberId"></param>

@@ -27,6 +27,9 @@ namespace DTOs.Users
 
         [Required]
         public string? userRole { get; set; }
+
+        [Required]
+        public Guid RoleId { get; set; }
     }
 
     public static class UserResponseExtensions
@@ -40,11 +43,12 @@ namespace DTOs.Users
                 LastName = user.LastName,
                 Email = user.Email,
                 Username = user.Username,
-                userRole = user.Role.Name
+                userRole = user.Role.Name,
+                RoleId = user.RoleId
             };
         }
 
-        public static User ToUser(this UserResponse userResponse)
+        public static User ToUser(this UserResponse userResponse, Role role)
         {
             return new User
             {
@@ -52,7 +56,9 @@ namespace DTOs.Users
                 FirstName = userResponse.FirstName,
                 LastName = userResponse.LastName,
                 Email = userResponse.Email,
-                Username = userResponse.Username
+                Username = userResponse.Username,
+                RoleId = role.Id,
+                Role = role
             };
         }
     }

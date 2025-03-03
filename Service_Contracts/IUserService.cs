@@ -36,7 +36,7 @@ namespace Service_Contracts
         /// </summary>
         /// <param name="employeeUserName"></param>
         /// <returns></returns>
-        public Task<List<UserResponse>> GetEmployeeByUserName(string? employeeUserName);
+        public Task<UserResponse> GetEmployeeByUserName(string? employeeUserName);
 
         /// <summary>
         /// Get Employee by Id
@@ -50,7 +50,7 @@ namespace Service_Contracts
         /// </summary>
         /// <param name="userRequest"></param>
         /// <returns></returns>
-        public Task<UserResponse> UpdateEmployeeDetails(UserRequest userRequest);
+        public Task<UserResponse> UpdateEmployeeDetails(UserRequest userRequest, Guid userId);
 
         /// <summary>
         /// Delete Employee by Id

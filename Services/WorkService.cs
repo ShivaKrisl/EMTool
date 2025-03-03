@@ -8,6 +8,8 @@ using DTOs.Tasks;
 using EfCore;
 using DTOs.Users;
 using DTOs.Teams;
+using DTOs.TeamMembers;
+using DTOs.Roles;
 
 namespace Services
 {
@@ -17,12 +19,16 @@ namespace Services
 
         private readonly IUserService _userService;
         private readonly ITeamService _teamService;
+        private readonly IRoleService _roleService;
+        private readonly ITeamMemberService _memberService;
         private readonly List<Work> _works;
 
         public WorkService()
         {
             _userService = new UserService();
             _teamService = new TeamService();
+            _roleService = new RoleService();
+            _memberService = new TeamMemberService();
             _works = new List<Work>();
         }
 
@@ -45,10 +51,10 @@ namespace Services
                 throw new ArgumentException("Invalid WorkRequest model");
             }
 
-            bool workExists = _works.Any(w => w.Title == workRequest.Title);
+            bool workExists = _works.Any(w => w.Title == workRequest.Title && w.TeamId == workRequest.TeamId);
             if (workExists)
             {
-                throw new ArgumentException("A task with the same title already exists.");
+                throw new ArgumentException("A task with the same title already exists in the Team.");
             }
 
             Work work = workRequest.ToWork();
@@ -66,11 +72,37 @@ namespace Services
             {
                 throw new ArgumentException("Only Employees can be assigned tasks");
             }
+
+            // check if he exists in that Team
+
+            TeamMemberResponse? assignedToResponse = await _memberService.GetTeamMemberById(workRequest.AssignedTo);
+
+            if(assignedToResponse == null || assignedToResponse.TeamId != workRequest.TeamId)
+            {
+                throw new ArgumentException("User does not belongs to same Team");
+            }
+
+            TeamMemberResponse? assignedByResponse = await _memberService.GetTeamMemberById(workRequest.AssignedBy);
+
+            if (assignedByResponse == null ||  assignedByResponse.TeamId != workRequest.TeamId)
+            {
+                throw new ArgumentException("Nanager does not belongs to same Team");
+            }
+
+            RoleResponse? assignedByRoleResponse = await _roleService.GetRoleById(assignedByUserResponse.RoleId);
+
+            if(assignedByRoleResponse == null || assignedByRoleResponse.Name != UserRoles.Manager.ToString())
+            {
+                throw new ArgumentException("Only Manager can add task");
+            }
+
+            RoleResponse? assignedToRoleResponse = await _roleService.GetRoleById(assignedToUserResponse.RoleId);
+
             work.CreatedAt = DateTime.UtcNow;
             work.AssignedBy = assignedByUserResponse.Id;
-            work.Assigner = assignedByUserResponse.ToUser();
+            work.Assigner = assignedByUserResponse.ToUser(assignedByRoleResponse.ToRole());
             work.AssignedTo = assignedToUserResponse.Id;
-            work.Assignee = assignedToUserResponse.ToUser();
+            work.Assignee = assignedToUserResponse.ToUser(assignedToRoleResponse.ToRole());
 
             TeamResponse teamResponse = await _teamService.GetTeamById(workRequest.TeamId);
             if (teamResponse == null)
@@ -184,15 +216,25 @@ namespace Services
                 throw new ArgumentException("User performing update not found");
             }
 
+            TeamMemberResponse? teamMember = await _memberService.GetTeamMemberById(userId);
+
+            if(teamMember == null || teamMember.TeamId != workRequest.TeamId)
+            {
+                throw new ArgumentException("User does not belong to same team");
+            }
+
             if (updater.userRole == UserRoles.Manager.ToString())
             {
                 work.Title = workRequest.Title;
                 work.Description = workRequest.Description;
                 work.Status = workRequest.Status;
                 work.Deadline = workRequest.Deadline;
-                work.AssignedBy = workRequest.AssignedBy;
                 work.AssignedTo = workRequest.AssignedTo;
                 work.TeamId = workRequest.TeamId;
+                UserResponse Assignee = await _userService.GetEmployeeById(workRequest.AssignedTo);
+                RoleResponse responseRole = await _roleService.GetRoleById(Assignee.RoleId);
+                work.Assignee = Assignee.ToUser(responseRole.ToRole());
+
             }
             else if(updater.userRole == UserRoles.Employee.ToString())
             {
@@ -209,7 +251,6 @@ namespace Services
             }
 
             return work.ToWorkResponse(work.Assigner.ToUserResponse(), work.Assignee.ToUserResponse());
-
         }
 
         /// <summary>

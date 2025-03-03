@@ -3,6 +3,7 @@ using DTOs.Teams;
 using DTOs.Users;
 using EfCore;
 using Service_Contracts;
+using DTOs.Roles;
 
 
 namespace Services
@@ -13,12 +14,14 @@ namespace Services
         private readonly List<TeamMember> _teamMembers;
         private readonly IUserService _userService;
         private readonly ITeamService _teamService;
+        private readonly IRoleService _roleService;
 
         public TeamMemberService()
         {
             _teamMembers = new List<TeamMember>();
             _userService = new UserService();
             _teamService = new TeamService();
+            _roleService = new RoleService();
         }
 
         /// <summary>
@@ -50,15 +53,23 @@ namespace Services
             TeamMember teamMember = teamMemberRequest.ToTeamMember();
             teamMember.Id = Guid.NewGuid();
 
-            UserResponse response = await _userService.GetEmployeeById(teamMember.UserId);
+            UserResponse response = await _userService.GetEmployeeById(teamMemberRequest.UserId);
             if (response == null)
             {
                 throw new ArgumentException("User does not exist");
             }
-            User user = response.ToUser();
+
+            RoleResponse? roleResponse = await _roleService.GetRoleById(response.RoleId);
+
+            if (roleResponse == null || roleResponse.Name != UserRoles.Manager.ToString())
+            {
+                throw new ArgumentException("Only Manager can add team member to Team");
+            }
+
+            User user = response.ToUser(roleResponse.ToRole());
             teamMember.User = user;
 
-            TeamResponse teamResponse = await _teamService.GetTeamById(teamMember.TeamId);
+            TeamResponse teamResponse = await _teamService.GetTeamById(teamMemberRequest.TeamId);
             if (teamResponse == null)
             {
                 throw new ArgumentException("Team does not exist");
@@ -66,10 +77,10 @@ namespace Services
 
             if(teamResponse.ManagerId != response.Id)
             {
-                throw new ArgumentException("Only Manager can add a team member");
+                throw new ArgumentException("Only Same Team Manager can add a team member");
             }
 
-            Team team = teamResponse.ToTeam();
+            Team team = teamResponse.ToTeam(user);
             teamMember.Team = team;
 
             _teamMembers.Add(teamMember);
@@ -95,6 +106,30 @@ namespace Services
             List<TeamMemberResponse> teamMemberResponses = teamMembers.Select(t => t.ToTeamMemberResponse()).ToList();
             return Task.FromResult(teamMemberResponses);
         }
+
+        /// <summary>
+        /// Get a Team member by Id
+        /// </summary>
+        /// <param name="teamId"></param>
+        /// <returns></returns>
+        public Task<TeamMemberResponse>? GetTeamMemberById(Guid userId)
+        {
+            if (userId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+
+            TeamMember? teamMember = _teamMembers.FirstOrDefault(t => t.UserId == userId);
+
+            if (teamMember == null)
+            {
+                return null;
+            }
+
+            return Task.FromResult(teamMember.ToTeamMemberResponse());
+
+        }
+
 
         /// <summary>
         /// Delete a team member

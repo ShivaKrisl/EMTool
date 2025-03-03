@@ -28,6 +28,9 @@ namespace DTOs.Teams
         /// </summary>
         [Required]
         public Guid ManagerId { get; set; }
+
+        [Required]
+        public string ManagerName { get; set; }
     }
 
     public static class TeamResponseExtensions
@@ -38,17 +41,20 @@ namespace DTOs.Teams
             {
                 Id = team.Id,
                 TeamName = team.TeamName,
-                ManagerId = team.ManagerId
+                ManagerId = team.ManagerId,
+                ManagerName = team.Manager.Username,
+
             };
         }
 
-        public static Team ToTeam(this TeamResponse teamResponse)
+        public static Team ToTeam(this TeamResponse teamResponse, User manager)
         {
             return new Team
             {
                 Id = teamResponse.Id,
                 TeamName = teamResponse.TeamName,
                 ManagerId = teamResponse.ManagerId,
+                Manager = manager
             };
         }
     }
