@@ -112,7 +112,7 @@ namespace Services
         /// </summary>
         /// <param name="teamId"></param>
         /// <returns></returns>
-        public Task<TeamMemberResponse>? GetTeamMemberById(Guid userId)
+        public Task<TeamMemberResponse>? GetTeamMemberByUserId(Guid userId)
         {
             if (userId == Guid.Empty)
             {

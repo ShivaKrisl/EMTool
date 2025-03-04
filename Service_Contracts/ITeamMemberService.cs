@@ -28,7 +28,7 @@ namespace Service_Contracts
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public Task<TeamMemberResponse>? GetTeamMemberById(Guid userId);
+        public Task<TeamMemberResponse>? GetTeamMemberByUserId(Guid userId);
 
         /// <summary>
         /// Delete a team member

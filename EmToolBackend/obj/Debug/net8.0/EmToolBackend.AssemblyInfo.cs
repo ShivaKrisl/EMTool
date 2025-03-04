@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EmToolBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2f53fd9ce9941724367784e45c0e4fdaac31b9b2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e9c979a9d3b59a617cbdf35a6b33560a26592ccf")]
 [assembly: System.Reflection.AssemblyProductAttribute("EmToolBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EmToolBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
