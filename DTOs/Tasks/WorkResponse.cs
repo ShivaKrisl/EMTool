@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DTOs.Roles;
 using DTOs.Users;
 using EfCore;
 
@@ -81,6 +82,24 @@ namespace DTOs.Tasks
                 Status = work.Status,
                 Deadline = work.Deadline,
                 CreatedAt = work.CreatedAt
+            };
+        }
+
+        public static Work ToWork(this WorkResponse workResponse, UserResponse AssignedBy, UserResponse AssignedTo, RoleResponse roleResponse)
+        {
+            return new Work
+            {
+                Id = workResponse.Id,
+                Title = workResponse.Title,
+                Description = workResponse.Description,
+                TeamId = workResponse.TeamId,
+                Status = workResponse.Status,
+                Deadline = workResponse.Deadline,
+                CreatedAt = workResponse.CreatedAt,
+                Assigner = AssignedBy.ToUser(roleResponse.ToRole()),
+                Assignee = AssignedTo.ToUser(roleResponse.ToRole()),
+                AssignedBy = AssignedBy.Id,
+                AssignedTo = AssignedTo.Id
             };
         }
     }

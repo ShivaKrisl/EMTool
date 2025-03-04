@@ -86,7 +86,7 @@ namespace Services
 
             if (assignedByResponse == null ||  assignedByResponse.TeamId != workRequest.TeamId)
             {
-                throw new ArgumentException("Nanager does not belongs to same Team");
+                throw new ArgumentException("Manager does not belongs to same Team");
             }
 
             RoleResponse? assignedByRoleResponse = await _roleService.GetRoleById(assignedByUserResponse.RoleId);

@@ -1,0 +1,16 @@
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\bin\Debug\net8.0\DTOs.deps.json
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\bin\Debug\net8.0\DTOs.dll
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\bin\Debug\net8.0\DTOs.pdb
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\bin\Debug\net8.0\EfCore.dll
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\bin\Debug\net8.0\EfCore.pdb
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\obj\Debug\net8.0\DTOs.csproj.AssemblyReference.cache
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\obj\Debug\net8.0\DTOs.GeneratedMSBuildEditorConfig.editorconfig
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\obj\Debug\net8.0\DTOs.AssemblyInfoInputs.cache
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\obj\Debug\net8.0\DTOs.AssemblyInfo.cs
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\obj\Debug\net8.0\DTOs.csproj.CoreCompileInputs.cache
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\obj\Debug\net8.0\DTOs.sourcelink.json
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\obj\Debug\net8.0\DTOs.csproj.Up2Date
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\obj\Debug\net8.0\DTOs.dll
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\obj\Debug\net8.0\refint\DTOs.dll
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\obj\Debug\net8.0\DTOs.pdb
+D:\Microsoft\ASP.NET_Learn\EmTool\DTOs\obj\Debug\net8.0\ref\DTOs.dll
