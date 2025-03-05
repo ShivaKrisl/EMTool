@@ -97,7 +97,7 @@ namespace Services
         /// <param name="PR_Id"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<PREntityResponse> GetPullRequestBy(Guid PR_Id)
+        public Task<PREntityResponse> GetPullRequestById(Guid PR_Id)
         {
             if(PR_Id == Guid.Empty)
             {

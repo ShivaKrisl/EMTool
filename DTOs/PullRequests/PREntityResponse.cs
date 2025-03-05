@@ -93,5 +93,23 @@ namespace DTOs.PullRequests
                 IsReadyForApproval = pullRequest.IsReadyForApproval
             };
         }
+
+        public static PullRequest ToPullRequest(this PREntityResponse pREntityResponse)
+        {
+            return new PullRequest()
+            {
+                Id = pREntityResponse.Id,
+                TaskId = pREntityResponse.TaskId,
+                CreatedById = pREntityResponse.CreatedById,
+                PRLink = pREntityResponse.PRLink,
+                PRDescription = pREntityResponse.PRDescription,
+                AttachmentPath = pREntityResponse.AttachmentPath,
+                PRStatus = pREntityResponse.PRStatus,
+                CreatedAt = pREntityResponse.CreatedAt,
+                Task = pREntityResponse.Task,
+                CreatedBy = pREntityResponse.CreatedBy,
+                IsReadyForApproval = pREntityResponse.IsReadyForApproval
+            };
+        }
     }
 }

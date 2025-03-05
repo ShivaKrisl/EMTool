@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DTOs.Users;
+using DTOs.PullRequests;
 
 namespace DTOs.PRReviews
 {
@@ -49,10 +51,10 @@ namespace DTOs.PRReviews
         public DateTime ReviewDate { get; set; }
 
         [Required]
-        public PullRequest PullRequest { get; set; }
+        public PREntityResponse PullRequest { get; set; }
 
         [Required]
-        public User Reviewer { get; set; }
+        public UserResponse Reviewer { get; set; }
     }
 
     public static class ReviewResponseExtensions
@@ -67,8 +69,8 @@ namespace DTOs.PRReviews
                 ReviewStatus = review.ReviewStatus,
                 ReviewComments = review.ReviewComments,
                 ReviewDate = review.ReviewDate,
-                PullRequest = review.PullRequest,
-                Reviewer = review.Reviewer
+                PullRequest = review.PullRequest.ToPREntityResponse(),
+                Reviewer = review.Reviewer.ToUserResponse()
             };
         }
     }
