@@ -165,6 +165,40 @@ namespace Services
             return Task.FromResult<List<PREntityResponse>?>(pREntityResponses);
         }
 
+
+        public bool GetPRApprovalStatus(Guid PR_Id)
+        {
+            if (PR_Id == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(PR_Id));
+            }
+
+            PullRequest? pullRequest = _pullRequests.FirstOrDefault(pr => pr.Id == PR_Id);
+            if (pullRequest == null)
+            {
+                throw new ArgumentException("PR not found!");
+            }
+
+            int totalReviews = pullRequest.Reviews.Count;
+            int approvedReviews = pullRequest.Reviews.Count(r => r.ReviewStatus == PRStatus.Approved.ToString());
+
+            // if all reviews are approved
+            if (totalReviews > 0 && approvedReviews == totalReviews)
+            {
+                pullRequest.IsReadyForApproval = true;
+                return true;
+            }
+
+            // check for >=70%
+            if (totalReviews > 0 && (approvedReviews / (double)totalReviews) >= 0.7)
+            {
+                pullRequest.IsReadyForApproval = true;
+                return true;
+            }
+            return false;
+
+        }
+
         /// <summary>
         /// Update the status of a pull request by its Id only manager can do this
         /// </summary>
@@ -225,6 +259,13 @@ namespace Services
             {
                 throw new ArgumentException("PR is already approved or rejected!");
             }
+
+            bool isReady = GetPRApprovalStatus(PR_Id);
+            if (!isReady && newStatus == PRStatus.Approved.ToString())
+            {
+                throw new ArgumentException("PR cannot be approved until it has enough reviews!");
+            }
+
             pullRequest.PRStatus = newStatus;
             return pullRequest.ToPREntityResponse();
         }

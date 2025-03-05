@@ -55,6 +55,11 @@ namespace DTOs.PullRequests
         public string PRStatus { get; set; }
 
         /// <summary>
+        /// Flag to indicate if PR is ready for approvals
+        /// </summary>
+        public bool IsReadyForApproval { get; set; }
+
+        /// <summary>
         /// Timestamp when PR was created
         /// </summary>
         [Required]
@@ -85,6 +90,7 @@ namespace DTOs.PullRequests
                 CreatedAt = pullRequest.CreatedAt,
                 Task = pullRequest.Task,
                 CreatedBy = pullRequest.CreatedBy,
+                IsReadyForApproval = pullRequest.IsReadyForApproval
             };
         }
     }

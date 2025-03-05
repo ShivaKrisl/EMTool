@@ -52,6 +52,12 @@ namespace EfCore
         public string PRStatus { get; set; }
 
         /// <summary>
+        /// Flag to indicate if PR is ready for approvals
+        /// </summary>  
+        [Required]
+        public bool IsReadyForApproval { get; set; } = false;
+
+        /// <summary>
         /// Timestamp when PR was created
         /// </summary>
         [Required]

@@ -75,14 +75,14 @@ namespace Services
 
             // check if he exists in that Team
 
-            TeamMemberResponse? assignedToResponse = await _memberService.GetTeamMemberById(workRequest.AssignedTo);
+            TeamMemberResponse? assignedToResponse = await _memberService.GetTeamMemberByUserId(workRequest.AssignedTo);
 
             if(assignedToResponse == null || assignedToResponse.TeamId != workRequest.TeamId)
             {
                 throw new ArgumentException("User does not belongs to same Team");
             }
 
-            TeamMemberResponse? assignedByResponse = await _memberService.GetTeamMemberById(workRequest.AssignedBy);
+            TeamMemberResponse? assignedByResponse = await _memberService.GetTeamMemberByUserId(workRequest.AssignedBy);
 
             if (assignedByResponse == null ||  assignedByResponse.TeamId != workRequest.TeamId)
             {
@@ -216,7 +216,7 @@ namespace Services
                 throw new ArgumentException("User performing update not found");
             }
 
-            TeamMemberResponse? teamMember = await _memberService.GetTeamMemberById(userId);
+            TeamMemberResponse? teamMember = await _memberService.GetTeamMemberByUserId(userId);
 
             if(teamMember == null || teamMember.TeamId != workRequest.TeamId)
             {
