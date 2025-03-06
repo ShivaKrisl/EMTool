@@ -215,6 +215,18 @@ namespace EfCore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedByRole")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.PrimitiveCollection<string>("InvitedUsersIds")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MeetingLink")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -226,6 +238,8 @@ namespace EfCore.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
 
                     b.HasIndex("TeamId");
 
@@ -520,11 +534,19 @@ namespace EfCore.Migrations
 
             modelBuilder.Entity("EfCore.ScrumMeeting", b =>
                 {
+                    b.HasOne("EfCore.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("EfCore.Team", "Team")
                         .WithMany("ScrumMeetings")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("CreatedByUser");
 
                     b.Navigation("Team");
                 });

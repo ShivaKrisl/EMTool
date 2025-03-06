@@ -37,10 +37,33 @@ namespace EfCore
         [Required]
         public string MeetingLink { get; set; }
 
+        /// <summary>
+        /// User Id of the creator of the Scrum Meeting
+        /// </summary>
+        [Required]
+        public Guid CreatedBy { get; set; }
+
+
+        /// <summary>
+        /// Role of the creator of the Scrum Meeting
+        /// </summary>
+        [Required]
+        [MaxLength(50)]
+        public string CreatedByRole { get; set; }
+
+        /// <summary>
+        /// List of User Ids invited to the Scrum Meeting
+        /// </summary>
+        [Required]
+        public ICollection<Guid> InvitedUsersIds { get; set; } = new List<Guid>();
+
         // Navigation Properties
 
         [ForeignKey("TeamId")]
         public Team Team { get; set; }
+
+        [ForeignKey("CreatedBy")]
+        public User CreatedByUser { get; set; }
 
         public ICollection<ScrumAttendance> ScrumAttendances { get; set; } = new List<ScrumAttendance>();
     }
