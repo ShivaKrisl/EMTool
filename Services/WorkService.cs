@@ -147,6 +147,36 @@ namespace Services
         }
 
         /// <summary>
+        /// Get all works assigned to a specific team
+        /// </summary>
+        /// <param name="teamId"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public async Task<List<WorkResponse>?> GetAllWorksOfTeam(Guid teamId)
+        {
+            if (teamId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(teamId));
+            }
+
+            TeamResponse? teamResponse = await _teamService.GetTeamById(teamId);
+
+            if (teamResponse == null)
+            {
+                throw new ArgumentException("Team not found");
+            }
+
+            List<WorkResponse> workResponses = _works
+                .Where(w => w.TeamId == teamId)
+                .Select(work => work.ToWorkResponse(work.Assigner.ToUserResponse(), work.Assignee.ToUserResponse()))
+                .ToList();
+
+            return workResponses;
+
+        }
+
+        /// <summary>
         /// Get all works assigned to a specific employee
         /// </summary>
         /// <param name="employeeId"></param>

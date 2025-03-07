@@ -17,7 +17,6 @@ namespace EfCore
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<ScrumMeeting> ScrumMeetings { get; set; }
         public DbSet<ScrumAttendance> ScrumAttendances { get; set; }
-        public DbSet<Report> Reports { get; set; }
 
         public EMDbContext(DbContextOptions<EMDbContext> options) : base(options) { }
 
@@ -36,7 +35,6 @@ namespace EfCore
             modelBuilder.Entity<Notification>().ToTable("Notifications");
             modelBuilder.Entity<ScrumMeeting>().ToTable("ScrumMeetings");
             modelBuilder.Entity<ScrumAttendance>().ToTable("ScrumAttendance");
-            modelBuilder.Entity<Report>().ToTable("Reports");
 
             // Relationships
             modelBuilder.Entity<User>()
@@ -123,17 +121,7 @@ namespace EfCore
                 .HasForeignKey(sa => sa.UserId)
                 .OnDelete(DeleteBehavior.Restrict); // Prevents deleting Users with Attendance records
 
-            modelBuilder.Entity<Report>()
-                .HasOne(r => r.SubmittedBy)
-                .WithMany(u => u.SubmittedReports)
-                .HasForeignKey(r => r.SubmittedById)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Report>()
-                .HasOne(r => r.ReviewedBy)
-                .WithMany(u => u.ReceivedReports)
-                .HasForeignKey(r => r.ReviewedById)
-                .OnDelete(DeleteBehavior.Restrict);
+            
         }
     }
 }

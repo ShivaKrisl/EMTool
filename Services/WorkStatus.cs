@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EfCore
 {
-    public enum TaskStatus
+    public enum WorkStatus
     {
         Pending = 0,
         InProgress = 1,

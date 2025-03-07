@@ -37,6 +37,13 @@ namespace Service_Contracts
         public Task<List<WorkResponse>> GetEmployeeWorks(Guid employeeId);
 
         /// <summary>
+        /// Get all works assigned to a specific team
+        /// </summary>
+        /// <param name="teamId"></param>
+        /// <returns></returns>
+        public Task<List<WorkResponse?>> GetAllWorksOfTeam(Guid teamId);
+
+        /// <summary>
         /// Delete a work (Only managers can delete work)
         /// </summary>
         /// <param name="workId"></param>

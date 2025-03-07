@@ -87,8 +87,6 @@ namespace EfCore
         public ICollection<Review> ReviewsReceived { get; set; } = new List<Review>();
         public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
         public ICollection<ScrumAttendance> ScrumAttendances { get; set; } = new List<ScrumAttendance>();
-        public ICollection<Report> SubmittedReports { get; set; } = new List<Report>();
-        public ICollection<Report> ReceivedReports { get; set; } = new List<Report>();
 
         public ICollection<Team> ManagedTeams { get; set; } = new List<Team>();
     }

@@ -292,5 +292,36 @@ namespace Services
             _pullRequests.Remove(pullRequest);
             return Task.FromResult(true);
         }
+
+        /// <summary>
+        /// Get all Pull Requests of a Team
+        /// </summary>
+        /// <param name="TeamId"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public Task<List<PREntityResponse>?> GetAllPullRequestsOfTeam(Guid TeamId)
+        {
+            if(TeamId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(TeamId));
+            }
+
+            List<PullRequest>? pullRequests = _pullRequests.Where(pr => pr.Task.TeamId == TeamId).ToList();
+
+            if (!pullRequests.Any())
+            {
+                return Task.FromResult<List<PREntityResponse>?>(null);
+            }
+
+            List<PREntityResponse>? pREntityResponses = new List<PREntityResponse>();
+
+            foreach (PullRequest pullRequest in pullRequests)
+            {
+                pREntityResponses.Add(pullRequest.ToPREntityResponse());
+            }
+
+            return Task.FromResult<List<PREntityResponse>?>(pREntityResponses);
+
+        }
     }
 }

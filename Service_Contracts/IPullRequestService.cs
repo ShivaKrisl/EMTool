@@ -24,6 +24,13 @@ namespace Service_Contracts
         public Task<PREntityResponse> GetPullRequestById(Guid PR_Id);
 
         /// <summary>
+        /// Get all Pull Requests of a Team
+        /// </summary>
+        /// <param name="TeamId"></param>
+        /// <returns></returns>
+        public Task<List<PREntityResponse>?> GetAllPullRequestsOfTeam(Guid TeamId);
+
+        /// <summary>
         /// Get all Pull Requests of a Task
         /// </summary>
         /// <param name="TaskId"></param>
