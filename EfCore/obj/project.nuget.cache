@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "cqPYMX/2OfY=",
+  "dgSpecHash": "VmeLBylcEFQ=",
   "success": true,
-  "projectFilePath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\EfCore\\EfCore.csproj",
+  "projectFilePath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\EfCore\\EfCore.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\SHIVA KRISHNA\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\SHIVA KRISHNA\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

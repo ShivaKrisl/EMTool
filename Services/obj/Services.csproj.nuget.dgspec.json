@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\Services\\Services.csproj": {}
+    "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Services\\Services.csproj": {}
   },
   "projects": {
-    "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\DTOs\\DTOs.csproj": {
+    "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\DTOs\\DTOs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\DTOs\\DTOs.csproj",
+        "projectUniqueName": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\DTOs\\DTOs.csproj",
         "projectName": "DTOs",
-        "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\DTOs\\DTOs.csproj",
+        "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\DTOs\\DTOs.csproj",
         "packagesPath": "C:\\Users\\SHIVA KRISHNA\\.nuget\\packages\\",
-        "outputPath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\DTOs\\obj\\",
+        "outputPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\DTOs\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\EfCore\\EfCore.csproj": {
-                "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\EfCore\\EfCore.csproj"
+              "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\EfCore\\EfCore.csproj": {
+                "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\EfCore\\EfCore.csproj"
               }
             }
           }
@@ -73,14 +73,14 @@
         }
       }
     },
-    "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\EfCore\\EfCore.csproj": {
+    "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\EfCore\\EfCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\EfCore\\EfCore.csproj",
+        "projectUniqueName": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\EfCore\\EfCore.csproj",
         "projectName": "EfCore",
-        "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\EfCore\\EfCore.csproj",
+        "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\EfCore\\EfCore.csproj",
         "packagesPath": "C:\\Users\\SHIVA KRISHNA\\.nuget\\packages\\",
-        "outputPath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\EfCore\\obj\\",
+        "outputPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\EfCore\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -150,14 +150,14 @@
         }
       }
     },
-    "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\Services\\Services.csproj": {
+    "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Services\\Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\Services\\Services.csproj",
+        "projectUniqueName": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Services\\Services.csproj",
         "projectName": "Services",
-        "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\Services\\Services.csproj",
+        "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Services\\Services.csproj",
         "packagesPath": "C:\\Users\\SHIVA KRISHNA\\.nuget\\packages\\",
-        "outputPath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\Services\\obj\\",
+        "outputPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Services\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -178,11 +178,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\DTOs\\DTOs.csproj": {
-                "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\DTOs\\DTOs.csproj"
+              "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\DTOs\\DTOs.csproj": {
+                "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\DTOs\\DTOs.csproj"
               },
-              "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\Service_Contracts\\Service_Contracts.csproj": {
-                "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\Service_Contracts\\Service_Contracts.csproj"
+              "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Service_Contracts\\Service_Contracts.csproj": {
+                "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Service_Contracts\\Service_Contracts.csproj"
               }
             }
           }
@@ -228,14 +228,14 @@
         }
       }
     },
-    "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\Service_Contracts\\Service_Contracts.csproj": {
+    "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Service_Contracts\\Service_Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\Service_Contracts\\Service_Contracts.csproj",
+        "projectUniqueName": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Service_Contracts\\Service_Contracts.csproj",
         "projectName": "Service_Contracts",
-        "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\Service_Contracts\\Service_Contracts.csproj",
+        "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Service_Contracts\\Service_Contracts.csproj",
         "packagesPath": "C:\\Users\\SHIVA KRISHNA\\.nuget\\packages\\",
-        "outputPath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\Service_Contracts\\obj\\",
+        "outputPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Service_Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -256,8 +256,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\DTOs\\DTOs.csproj": {
-                "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\DTOs\\DTOs.csproj"
+              "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\DTOs\\DTOs.csproj": {
+                "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\DTOs\\DTOs.csproj"
               }
             }
           }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EfCore.Migrations
 {
     [DbContext(typeof(EMDbContext))]
-    [Migration("20250306102544_ScrumMeetingUpdate")]
-    partial class ScrumMeetingUpdate
+    [Migration("20250308063502_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,34 +99,6 @@ namespace EfCore.Migrations
                     b.HasIndex("TaskId");
 
                     b.ToTable("PullRequests", (string)null);
-                });
-
-            modelBuilder.Entity("EfCore.Report", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<Guid>("ReviewedById")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("SubmittedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("SubmittedById")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReviewedById");
-
-                    b.HasIndex("SubmittedById");
-
-                    b.ToTable("Reports", (string)null);
                 });
 
             modelBuilder.Entity("EfCore.Review", b =>
@@ -449,7 +421,7 @@ namespace EfCore.Migrations
                     b.HasOne("EfCore.User", "User")
                         .WithMany("Notifications")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -460,13 +432,13 @@ namespace EfCore.Migrations
                     b.HasOne("EfCore.User", "CreatedBy")
                         .WithMany("PullRequests")
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EfCore.Work", "Task")
                         .WithMany("PullRequests")
                         .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("CreatedBy");
@@ -474,31 +446,12 @@ namespace EfCore.Migrations
                     b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("EfCore.Report", b =>
-                {
-                    b.HasOne("EfCore.User", "ReviewedBy")
-                        .WithMany("ReceivedReports")
-                        .HasForeignKey("ReviewedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EfCore.User", "SubmittedBy")
-                        .WithMany("SubmittedReports")
-                        .HasForeignKey("SubmittedById")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ReviewedBy");
-
-                    b.Navigation("SubmittedBy");
-                });
-
             modelBuilder.Entity("EfCore.Review", b =>
                 {
                     b.HasOne("EfCore.PullRequest", "PullRequest")
                         .WithMany("Reviews")
                         .HasForeignKey("PullRequestId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EfCore.User", "Reviewer")
@@ -521,7 +474,7 @@ namespace EfCore.Migrations
                     b.HasOne("EfCore.ScrumMeeting", "ScrumMeeting")
                         .WithMany("ScrumAttendances")
                         .HasForeignKey("MeetingId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EfCore.User", "User")
@@ -576,7 +529,7 @@ namespace EfCore.Migrations
                     b.HasOne("EfCore.User", "User")
                         .WithMany("TeamMembers")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Team");
@@ -619,7 +572,7 @@ namespace EfCore.Migrations
                     b.HasOne("EfCore.Work", "Task")
                         .WithMany("Attachments")
                         .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EfCore.User", "User")
@@ -638,13 +591,13 @@ namespace EfCore.Migrations
                     b.HasOne("EfCore.Work", "Task")
                         .WithMany("Comments")
                         .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EfCore.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Task");
@@ -686,15 +639,11 @@ namespace EfCore.Migrations
 
                     b.Navigation("PullRequests");
 
-                    b.Navigation("ReceivedReports");
-
                     b.Navigation("ReviewsGiven");
 
                     b.Navigation("ReviewsReceived");
 
                     b.Navigation("ScrumAttendances");
-
-                    b.Navigation("SubmittedReports");
 
                     b.Navigation("TeamMembers");
 

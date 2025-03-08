@@ -2850,11 +2850,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\Service_Contracts\\Service_Contracts.csproj",
+      "projectUniqueName": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Service_Contracts\\Service_Contracts.csproj",
       "projectName": "Service_Contracts",
-      "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\Service_Contracts\\Service_Contracts.csproj",
+      "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Service_Contracts\\Service_Contracts.csproj",
       "packagesPath": "C:\\Users\\SHIVA KRISHNA\\.nuget\\packages\\",
-      "outputPath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\Service_Contracts\\obj\\",
+      "outputPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Service_Contracts\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2875,8 +2875,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\DTOs\\DTOs.csproj": {
-              "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EmTool\\DTOs\\DTOs.csproj"
+            "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\DTOs\\DTOs.csproj": {
+              "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\DTOs\\DTOs.csproj"
             }
           }
         }

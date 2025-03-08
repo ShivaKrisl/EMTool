@@ -67,34 +67,7 @@ namespace EfCore.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Reports",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SubmittedById = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReviewedById = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    SubmittedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reports", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Reports_Users_ReviewedById",
-                        column: x => x.ReviewedById,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Reports_Users_SubmittedById",
-                        column: x => x.SubmittedById,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -158,6 +131,7 @@ namespace EfCore.Migrations
                     PRDescription = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     AttachmentPath = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PRStatus = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    IsReadyForApproval = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -168,13 +142,13 @@ namespace EfCore.Migrations
                         column: x => x.TaskId,
                         principalTable: "Tasks",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PullRequests_Users_CreatedById",
                         column: x => x.CreatedById,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -197,7 +171,7 @@ namespace EfCore.Migrations
                         column: x => x.TaskId,
                         principalTable: "Tasks",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TaskAttachments_Users_UserId",
                         column: x => x.UserId,
@@ -224,13 +198,13 @@ namespace EfCore.Migrations
                         column: x => x.TaskId,
                         principalTable: "Tasks",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TaskComments_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -241,7 +215,10 @@ namespace EfCore.Migrations
                     TeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ScheduledDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Agenda = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MeetingLink = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    MeetingLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedByRole = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    InvitedUsersIds = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -252,6 +229,12 @@ namespace EfCore.Migrations
                         principalTable: "Teams",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ScrumMeetings_Users_CreatedBy",
+                        column: x => x.CreatedBy,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,7 +259,7 @@ namespace EfCore.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -299,7 +282,7 @@ namespace EfCore.Migrations
                         column: x => x.PullRequestId,
                         principalTable: "PullRequests",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Reviews_Users_ReviewerId",
                         column: x => x.ReviewerId,
@@ -331,7 +314,7 @@ namespace EfCore.Migrations
                         column: x => x.MeetingId,
                         principalTable: "ScrumMeetings",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ScrumAttendance_Users_UserId",
                         column: x => x.UserId,
@@ -354,16 +337,6 @@ namespace EfCore.Migrations
                 name: "IX_PullRequests_TaskId",
                 table: "PullRequests",
                 column: "TaskId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reports_ReviewedById",
-                table: "Reports",
-                column: "ReviewedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reports_SubmittedById",
-                table: "Reports",
-                column: "SubmittedById");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_PullRequestId",
@@ -389,6 +362,11 @@ namespace EfCore.Migrations
                 name: "IX_ScrumAttendance_UserId",
                 table: "ScrumAttendance",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScrumMeetings_CreatedBy",
+                table: "ScrumMeetings",
+                column: "CreatedBy");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ScrumMeetings_TeamId",
@@ -451,9 +429,6 @@ namespace EfCore.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Notifications");
-
-            migrationBuilder.DropTable(
-                name: "Reports");
 
             migrationBuilder.DropTable(
                 name: "Reviews");

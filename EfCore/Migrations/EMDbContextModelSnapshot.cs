@@ -418,7 +418,7 @@ namespace EfCore.Migrations
                     b.HasOne("EfCore.User", "User")
                         .WithMany("Notifications")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -429,13 +429,13 @@ namespace EfCore.Migrations
                     b.HasOne("EfCore.User", "CreatedBy")
                         .WithMany("PullRequests")
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EfCore.Work", "Task")
                         .WithMany("PullRequests")
                         .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("CreatedBy");
@@ -448,7 +448,7 @@ namespace EfCore.Migrations
                     b.HasOne("EfCore.PullRequest", "PullRequest")
                         .WithMany("Reviews")
                         .HasForeignKey("PullRequestId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EfCore.User", "Reviewer")
@@ -471,7 +471,7 @@ namespace EfCore.Migrations
                     b.HasOne("EfCore.ScrumMeeting", "ScrumMeeting")
                         .WithMany("ScrumAttendances")
                         .HasForeignKey("MeetingId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EfCore.User", "User")
@@ -526,7 +526,7 @@ namespace EfCore.Migrations
                     b.HasOne("EfCore.User", "User")
                         .WithMany("TeamMembers")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Team");
@@ -569,7 +569,7 @@ namespace EfCore.Migrations
                     b.HasOne("EfCore.Work", "Task")
                         .WithMany("Attachments")
                         .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EfCore.User", "User")
@@ -588,13 +588,13 @@ namespace EfCore.Migrations
                     b.HasOne("EfCore.Work", "Task")
                         .WithMany("Comments")
                         .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EfCore.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Task");
