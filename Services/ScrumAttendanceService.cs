@@ -19,14 +19,14 @@ namespace Services
         private readonly ITeamMemberService _teamMemberService;
         private readonly ITeamService _teamService;
 
-        public ScrumAttendanceService()
+        public ScrumAttendanceService(IScrumMeetingService scrumMeetingService, IUserService userService, IRoleService roleService, ITeamMemberService teamMemberService, ITeamService teamService)
         {
             _scrumAttendances = new List<ScrumAttendance>();
-            _scrumMeetingService = new ScrumMeetingService();
-            _userService = new UserService();
-            _roleService = new RoleService();
-            _teamMemberService = new TeamMemberService();
-            _teamService = new TeamService();
+            _scrumMeetingService = scrumMeetingService;
+            _userService = userService;
+            _roleService = roleService;
+            _teamMemberService = teamMemberService;
+            _teamService = teamService;
         }
 
         /// <summary>

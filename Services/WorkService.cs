@@ -23,12 +23,12 @@ namespace Services
         private readonly ITeamMemberService _memberService;
         private readonly List<Work> _works;
 
-        public WorkService()
+        public WorkService(IUserService userService, ITeamService teamService, IRoleService roleService, ITeamMemberService teamMemberService)
         {
-            _userService = new UserService();
-            _teamService = new TeamService();
-            _roleService = new RoleService();
-            _memberService = new TeamMemberService();
+            _userService = userService;
+            _teamService = teamService;
+            _roleService = roleService;
+            _memberService = teamMemberService;
             _works = new List<Work>();
         }
 

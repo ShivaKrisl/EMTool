@@ -16,13 +16,13 @@ namespace Services
 
         private readonly List<Team> _teams;
         private readonly IUserService _userService;
-        private readonly RoleService _roleService;
+        private readonly IRoleService _roleService;
 
-        public TeamService()
+        public TeamService(IUserService userService, IRoleService roleService)
         {
             _teams = new List<Team>();
-            _userService = new UserService();
-            _roleService = new RoleService();
+            _userService = userService;
+            _roleService = roleService;
         }
 
         /// <summary>

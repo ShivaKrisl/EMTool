@@ -20,12 +20,12 @@ namespace Services
         private readonly IRoleService _roleService;
         private readonly IWorkService _workService;
 
-        public WorkAttachmentService()
+        public WorkAttachmentService(IUserService userService, IRoleService roleService, IWorkService workService)
         {
             _workAttachments = new List<WorkAttachment>();
-            _userService = new UserService();
-            _roleService = new RoleService();
-            _workService = new WorkService();
+            _userService = userService;
+            _roleService = roleService;
+            _workService = workService;
         }
 
         /// <summary>

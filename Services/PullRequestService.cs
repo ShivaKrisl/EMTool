@@ -19,12 +19,12 @@ namespace Services
         private readonly IWorkService _workService;
         private readonly IRoleService _roleService;
 
-        public PullRequestService()
+        public PullRequestService(IUserService userService, IWorkService workService, IRoleService roleService)
         {
             _pullRequests = new List<PullRequest>();
-            _userService = new UserService();
-            _workService = new WorkService();
-            _roleService = new RoleService();
+            _userService = userService;
+            _workService = workService;
+            _roleService = roleService;
         }
 
         /// <summary>

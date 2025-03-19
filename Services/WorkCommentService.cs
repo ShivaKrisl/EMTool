@@ -22,13 +22,13 @@ namespace Services
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
 
-        public WorkCommentService()
+        public WorkCommentService(ITeamMemberService teamMemberService, IWorkService workService, IUserService userService, IRoleService roleService)
         {
             _workComments = new List<WorkComment>();
-            _workService = new WorkService();
-            _teamMemberService = new TeamMemberService();
-            _userService = new UserService();
-            _roleService = new RoleService();
+            _workService = workService;
+            _teamMemberService = teamMemberService;
+            _userService = userService;
+            _roleService = roleService;
         }
 
         /// <summary>

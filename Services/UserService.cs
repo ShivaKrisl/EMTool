@@ -17,10 +17,10 @@ namespace Services
         private readonly List<User> _users;
         private readonly IRoleService _roleService;
 
-        public UserService()
+        public UserService(IRoleService roleService)
         {
             _users = new List<User>();
-            _roleService = new RoleService();
+            _roleService = roleService;
         }
 
         /// <summary>

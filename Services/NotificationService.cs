@@ -14,11 +14,11 @@ namespace Services
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
 
-        public NotificationService()
+        public NotificationService(IUserService userService, IRoleService roleService)
         {
             _notifications = new List<Notification>();
-            _userService = new UserService();
-            _roleService = new RoleService();
+            _userService = userService;
+            _roleService = roleService;
         }
 
         /// <summary>

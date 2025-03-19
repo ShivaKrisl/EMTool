@@ -24,13 +24,13 @@ namespace Services
         /// <summary>
         /// Constructor for ScrumMeetingService
         /// </summary>
-        public ScrumMeetingService()
+        public ScrumMeetingService(ITeamService teamService, IUserService userService, ITeamMemberService teamMemberService, IRoleService roleService)
         {
             _scrumMeetings = new List<ScrumMeeting>();
-            _teamService = new TeamService();
-            _userService = new UserService();
-            _teamMemberService = new TeamMemberService();
-            _roleService = new RoleService();
+            _teamService = teamService;
+            _userService = userService;
+            _teamMemberService = teamMemberService;
+            _roleService = roleService;
         }
 
         /// <summary>

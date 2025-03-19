@@ -25,15 +25,15 @@ namespace Services
         private readonly ITeamMemberService _teamMemberService;
         private readonly IRoleService _roleService;
 
-        public PRReviewService()
+        public PRReviewService(IPullRequestService pullRequestService, IUserService userService, IWorkService workService, ITeamService teamService, ITeamMemberService teamMemberService, IRoleService roleService)
         {
             _reviews = new List<Review>();
-            _pullRequestService = new PullRequestService();
-            _userService = new UserService();
-            _workService = new WorkService();
-            _teamService = new TeamService();
-            _teamMemberService = new TeamMemberService();
-            _roleService = new RoleService();
+            _pullRequestService = pullRequestService;
+            _userService = userService;
+            _workService = workService;
+            _teamService = teamService;
+            _teamMemberService = teamMemberService;
+            _roleService = roleService;
         }
 
         /// <summary>

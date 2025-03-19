@@ -47,6 +47,19 @@
           }
         }
       },
+      "BCrypt.Net-Next/4.0.3": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/BCrypt.Net-Next.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/BCrypt.Net-Next.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Humanizer.Core/2.14.1": {
         "type": "package",
         "compile": {
@@ -1609,6 +1622,19 @@
           }
         }
       },
+      "DTOs/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "EfCore": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/DTOs.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DTOs.dll": {}
+        }
+      },
       "EfCore/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
@@ -1620,6 +1646,34 @@
         },
         "runtime": {
           "bin/placeholder/EfCore.dll": {}
+        }
+      },
+      "Services/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "BCrypt.Net-Next": "4.0.3",
+          "DTOs": "1.0.0",
+          "Service_Contracts": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Services.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Services.dll": {}
+        }
+      },
+      "Service_Contracts/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "DTOs": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Service_Contracts.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Service_Contracts.dll": {}
         }
       }
     }
@@ -1661,6 +1715,37 @@
         "azureicon.png",
         "lib/netstandard2.0/Azure.Identity.dll",
         "lib/netstandard2.0/Azure.Identity.xml"
+      ]
+    },
+    "BCrypt.Net-Next/4.0.3": {
+      "sha512": "W+U9WvmZQgi5cX6FS5GDtDoPzUCV4LkBLkywq/kRZhuDwcbavOzcDAr3LXJFqHUi952Yj3LEYoWW0jbEUQChsA==",
+      "type": "package",
+      "path": "bcrypt.net-next/4.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "bcrypt.net-next.4.0.3.nupkg.sha512",
+        "bcrypt.net-next.nuspec",
+        "ico.png",
+        "lib/net20/BCrypt.Net-Next.dll",
+        "lib/net20/BCrypt.Net-Next.xml",
+        "lib/net35/BCrypt.Net-Next.dll",
+        "lib/net35/BCrypt.Net-Next.xml",
+        "lib/net462/BCrypt.Net-Next.dll",
+        "lib/net462/BCrypt.Net-Next.xml",
+        "lib/net472/BCrypt.Net-Next.dll",
+        "lib/net472/BCrypt.Net-Next.xml",
+        "lib/net48/BCrypt.Net-Next.dll",
+        "lib/net48/BCrypt.Net-Next.xml",
+        "lib/net5.0/BCrypt.Net-Next.dll",
+        "lib/net5.0/BCrypt.Net-Next.xml",
+        "lib/net6.0/BCrypt.Net-Next.dll",
+        "lib/net6.0/BCrypt.Net-Next.xml",
+        "lib/netstandard2.0/BCrypt.Net-Next.dll",
+        "lib/netstandard2.0/BCrypt.Net-Next.xml",
+        "lib/netstandard2.1/BCrypt.Net-Next.dll",
+        "lib/netstandard2.1/BCrypt.Net-Next.xml",
+        "readme.md"
       ]
     },
     "Humanizer.Core/2.14.1": {
@@ -4738,17 +4823,34 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "DTOs/1.0.0": {
+      "type": "project",
+      "path": "../DTOs/DTOs.csproj",
+      "msbuildProject": "../DTOs/DTOs.csproj"
+    },
     "EfCore/1.0.0": {
       "type": "project",
       "path": "../EfCore/EfCore.csproj",
       "msbuildProject": "../EfCore/EfCore.csproj"
+    },
+    "Services/1.0.0": {
+      "type": "project",
+      "path": "../Services/Services.csproj",
+      "msbuildProject": "../Services/Services.csproj"
+    },
+    "Service_Contracts/1.0.0": {
+      "type": "project",
+      "path": "../Service_Contracts/Service_Contracts.csproj",
+      "msbuildProject": "../Service_Contracts/Service_Contracts.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
       "EfCore >= 1.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.2",
-      "Microsoft.EntityFrameworkCore.Tools >= 9.0.2"
+      "Microsoft.EntityFrameworkCore.Tools >= 9.0.2",
+      "Service_Contracts >= 1.0.0",
+      "Services >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -4785,6 +4887,12 @@
           "projectReferences": {
             "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\EfCore\\EfCore.csproj": {
               "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\EfCore\\EfCore.csproj"
+            },
+            "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Services\\Services.csproj": {
+              "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Services\\Services.csproj"
+            },
+            "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Service_Contracts\\Service_Contracts.csproj": {
+              "projectPath": "D:\\Microsoft\\ASP.NET_Learn\\EMTool\\EMTool\\Service_Contracts\\Service_Contracts.csproj"
             }
           }
         }

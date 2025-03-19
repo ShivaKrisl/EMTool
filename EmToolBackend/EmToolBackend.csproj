@@ -19,6 +19,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EfCore\EfCore.csproj" />
+    <ProjectReference Include="..\Services\Services.csproj" />
+    <ProjectReference Include="..\Service_Contracts\Service_Contracts.csproj" />
   </ItemGroup>
 
 </Project>
