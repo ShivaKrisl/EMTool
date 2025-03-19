@@ -34,25 +34,25 @@ namespace Services
         {
             if(userRequest == null)
             {
-                throw new ArgumentNullException(nameof(userRequest));
+                throw new ArgumentNullException();
             }
 
             bool isModelValid = ValidationHelper.IsStateValid(userRequest);
             if (!isModelValid)
             {
-                throw new ArgumentException("UserRequest is not valid");
+                throw new ArgumentException("UserRequest is not valid", nameof(userRequest));
             }
 
             // Check Username already exists
             if (_users.Any(u => u.Username == userRequest.Username))
             {
-                throw new ArgumentException("Username already exists");
+                throw new ArgumentException("Username already exists", nameof(userRequest.Username));
             }
 
             // Check Email already exists
             if (_users.Any(u => u.Email == userRequest.Email))
             {
-                throw new ArgumentException("Email already exists");
+                throw new ArgumentException("Email already exists", nameof(userRequest.Email));
             }
 
             User manager = userRequest.ToUser();
@@ -95,25 +95,25 @@ namespace Services
         {
             if (userRequest == null)
             {
-                throw new ArgumentNullException(nameof(userRequest));
+                throw new ArgumentNullException();
             }
 
             bool isModelValid = ValidationHelper.IsStateValid(userRequest);
             if (!isModelValid)
             {
-                throw new ArgumentException("UserRequest is not valid");
+                throw new ArgumentException("UserRequest is not valid", nameof(userRequest));
             }
 
             // check user name already exists
             if (_users.Any(u => u.Username == userRequest.Username))
             {
-                throw new ArgumentException("Username already exists");
+                throw new ArgumentException("Username already exists", nameof(userRequest.Username));
             }
 
             // check email already exists
             if (_users.Any(u => u.Email == userRequest.Email))
             {
-                throw new ArgumentException("Email already exists");
+                throw new ArgumentException("Email already exists", nameof(userRequest.Email));
             }
 
             User employee = userRequest.ToUser();
@@ -129,6 +129,14 @@ namespace Services
                 {
                     Name = UserRoles.Employee.ToString()
                 });
+            }
+
+            else
+            {
+                if(employeeRole.Name != UserRoles.Employee.ToString())
+                {
+                    throw new ArgumentException("Invalid Role", nameof(employeeRole));
+                }
             }
 
             employee.Role = employeeRole.ToRole();
@@ -148,13 +156,13 @@ namespace Services
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<List<UserResponse>> GetAllEmployees()
+        public async Task<List<UserResponse>> GetAllEmployees()
         {
-            if(_users == null)
+            if(_users == null || _users.Count == 0)
             {
-                return Task.FromResult(new List<UserResponse>());
+                return new List<UserResponse>();    
             }
-            return Task.FromResult(_users.Select(u => u.ToUserResponse()).ToList());
+            return _users.Select(u => u.ToUserResponse()).ToList();
         }
 
         /// <summary>
@@ -163,23 +171,23 @@ namespace Services
         /// <param name="employeeUserName"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<UserResponse> GetEmployeeByUserName(string? employeeUserName)
+        public async Task<UserResponse?> GetEmployeeByUserName(string? employeeUserName)
         {
             if (string.IsNullOrEmpty(employeeUserName))
             {
-                throw new ArgumentNullException(nameof(employeeUserName));
+                throw new ArgumentException("Please supply Username!!", nameof(employeeUserName));
             }
 
             User? filteredUser = _users.FirstOrDefault(u => u.Username == employeeUserName);
 
             if (filteredUser == null)
             {
-                throw new ArgumentException("User not found");
+                return null;
             }
 
             UserResponse userResponse = filteredUser.ToUserResponse();
 
-            return Task.FromResult(userResponse);
+            return userResponse;
         }
 
         /// <summary>
@@ -188,7 +196,7 @@ namespace Services
         /// <param name="UserId"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public Task<UserResponse> GetEmployeeById(Guid UserId)
+        public async Task<UserResponse?> GetEmployeeById(Guid UserId)
         {
             if (UserId == Guid.Empty)
             {
@@ -198,9 +206,9 @@ namespace Services
             User? user = _users.FirstOrDefault(u => u.Id == UserId);
             if (user == null)
             {
-                return Task.FromResult(new UserResponse());
+                return null;
             }
-            return Task.FromResult(user.ToUserResponse());
+            return user.ToUserResponse();
         }
 
         /// <summary>
@@ -213,32 +221,32 @@ namespace Services
         {
             if (userRequest == null)
             {
-                throw new ArgumentNullException(nameof(userRequest));
+                throw new ArgumentNullException();
             }
 
             bool isModelValid = ValidationHelper.IsStateValid(userRequest);
             if (!isModelValid)
             {
-                throw new ArgumentException("UserRequest is not valid");
+                throw new ArgumentException("UserRequest is not valid", nameof(userRequest));
             }
 
             User? userToUpdate = _users.FirstOrDefault(u => u.Id == userId);
 
             if (userToUpdate == null)
             {
-                throw new ArgumentException("User not found");
+                throw new ArgumentException("User not found", nameof(userToUpdate));
             }
 
             // Check Username already exists
             if (_users.Any(u => u.Username == userRequest.Username && u.Id != userId))
             {
-                throw new ArgumentException("Username already exists");
+                throw new ArgumentException("Username already exists", nameof(userRequest.Username));
             }
 
             // Check Email already exists
             if (_users.Any(u => u.Email == userRequest.Email && u.Id != userId))
             {
-                throw new ArgumentException("Email already exists");
+                throw new ArgumentException("Email already exists", nameof(userRequest.Email));
             }
 
             userToUpdate.FirstName = userRequest.FirstName;

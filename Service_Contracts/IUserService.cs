@@ -36,14 +36,14 @@ namespace Service_Contracts
         /// </summary>
         /// <param name="employeeUserName"></param>
         /// <returns></returns>
-        public Task<UserResponse> GetEmployeeByUserName(string? employeeUserName);
+        public Task<UserResponse?> GetEmployeeByUserName(string? employeeUserName);
 
         /// <summary>
         /// Get Employee by Id
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public Task<UserResponse> GetEmployeeById(Guid userId);
+        public Task<UserResponse?> GetEmployeeById(Guid userId);
 
         /// <summary>
         /// Update Employee details

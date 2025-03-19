@@ -30,6 +30,25 @@ namespace DTOs.Users
 
         [Required]
         public Guid RoleId { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            if(obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            UserResponse userResponse = (UserResponse)obj;
+
+            return (Id == userResponse.Id &&
+                   FirstName == userResponse.FirstName &&
+                   LastName == userResponse.LastName &&
+                   Email == userResponse.Email &&
+                   Username == userResponse.Username &&
+                   userRole == userResponse.userRole &&
+                   RoleId == userResponse.RoleId);
+        }
+
     }
 
     public static class UserResponseExtensions

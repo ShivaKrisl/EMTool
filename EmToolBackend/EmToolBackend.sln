@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service_Contracts", "..\Ser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "..\Services\Services.csproj", "{E7B91B2E-9C05-4676-8C6D-C9AFF3C3ABD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceTests", "..\ServiceTests\ServiceTests.csproj", "{AD8877DE-93D8-43D3-91B0-C9A08619C102}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "..\ServiceTests\Testing.csproj", "{AD8877DE-93D8-43D3-91B0-C9A08619C102}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

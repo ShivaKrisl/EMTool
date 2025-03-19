@@ -25,17 +25,26 @@ namespace Services
         /// <param name="roleRequest"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<RoleResponse> CreateRole(RoleRequest roleRequest)
+        public async Task<RoleResponse> CreateRole(RoleRequest? roleRequest)
         {
             if (roleRequest == null)
             {
-                throw new ArgumentNullException(nameof(roleRequest));
+                throw new ArgumentNullException();
             }
 
             bool isModelValid = ValidationHelper.IsStateValid(roleRequest);
             if (!isModelValid)
             {
                 throw new ArgumentException("RoleRequest is not valid");
+            }
+
+            try
+            {
+                Enum.Parse<UserRoles>(roleRequest.Name);
+            }
+            catch (ArgumentException)
+            {
+                throw new ArgumentException("Role name is not valid");
             }
 
             bool roleExists = _mockRoles.Any(r => r.Name == roleRequest.Name);
@@ -49,7 +58,7 @@ namespace Services
             role.Id = Guid.NewGuid();
             _mockRoles.Add(role);
 
-            return Task.FromResult(role.ToRoleResponse());
+            return role.ToRoleResponse();
 
         }
 
@@ -59,11 +68,11 @@ namespace Services
         /// <param name="roleId"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<RoleResponse>? GetRoleById(Guid roleId)
+        public async Task<RoleResponse>? GetRoleById(Guid roleId)
         {
             if(roleId == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(roleId));
+                throw new ArgumentNullException();
             }
 
             Role? role = _mockRoles.FirstOrDefault(r => r.Id == roleId);
@@ -71,7 +80,7 @@ namespace Services
             {
                 return null;
             }
-            return Task.FromResult(role.ToRoleResponse());
+            return role.ToRoleResponse();
 
         }
 
@@ -81,11 +90,11 @@ namespace Services
         /// <param name="roleName"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<RoleResponse>? GetRoleByName(string roleName)
+        public async Task<RoleResponse>? GetRoleByName(string roleName)
         {
             if (string.IsNullOrWhiteSpace(roleName))
             {
-                throw new ArgumentNullException(nameof(roleName));
+                throw new ArgumentNullException();
             }
 
             Role? role = _mockRoles.FirstOrDefault(r => r.Name.Equals(roleName));
@@ -93,7 +102,7 @@ namespace Services
             {
                 return null;
             }
-            return Task.FromResult<RoleResponse>(role.ToRoleResponse());
+            return role.ToRoleResponse();
         }
     }
 }

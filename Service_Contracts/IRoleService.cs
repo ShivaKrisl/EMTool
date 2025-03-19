@@ -15,7 +15,7 @@ namespace Service_Contracts
         /// </summary>
         /// <param name="roleRequest"></param>
         /// <returns></returns>
-        public Task<RoleResponse> CreateRole(RoleRequest roleRequest);
+        public Task<RoleResponse> CreateRole(RoleRequest? roleRequest);
 
         /// <summary>
         /// Get a User Role by Role Id

@@ -338,3 +338,10 @@ D:\Microsoft\ASP.NET_Learn\EMTool\EMTool\EmToolBackend\obj\Debug\net8.0\refint\E
 D:\Microsoft\ASP.NET_Learn\EMTool\EMTool\EmToolBackend\obj\Debug\net8.0\EmToolBackend.pdb
 D:\Microsoft\ASP.NET_Learn\EMTool\EMTool\EmToolBackend\obj\Debug\net8.0\EmToolBackend.genruntimeconfig.cache
 D:\Microsoft\ASP.NET_Learn\EMTool\EMTool\EmToolBackend\obj\Debug\net8.0\ref\EmToolBackend.dll
+D:\Microsoft\ASP.NET_Learn\EMTool\EMTool\EmToolBackend\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\Microsoft\ASP.NET_Learn\EMTool\EMTool\EmToolBackend\bin\Debug\net8.0\DTOs.dll
+D:\Microsoft\ASP.NET_Learn\EMTool\EMTool\EmToolBackend\bin\Debug\net8.0\Services.dll
+D:\Microsoft\ASP.NET_Learn\EMTool\EMTool\EmToolBackend\bin\Debug\net8.0\Service_Contracts.dll
+D:\Microsoft\ASP.NET_Learn\EMTool\EMTool\EmToolBackend\bin\Debug\net8.0\Services.pdb
+D:\Microsoft\ASP.NET_Learn\EMTool\EMTool\EmToolBackend\bin\Debug\net8.0\Service_Contracts.pdb
+D:\Microsoft\ASP.NET_Learn\EMTool\EMTool\EmToolBackend\bin\Debug\net8.0\DTOs.pdb

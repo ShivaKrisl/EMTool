@@ -21,6 +21,22 @@ namespace DTOs.Roles
         /// </summary>
         [Required]
         public string Name { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            if(obj == null)
+            {
+                return false;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            RoleResponse roleResponse = (RoleResponse)obj;
+            return (this.Id == roleResponse.Id && this.Name == roleResponse.Name);
+        }
     }
 
     public static class RoleResponseExtensions
