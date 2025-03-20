@@ -590,9 +590,184 @@ namespace Testing
 
         #region Update Employee
 
+        /// <summary>
+        /// Update Employee details with Null Request
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task UpdateEmployeeDetails_NullRequest_ToBeArgumentNullException()
+        {
+            // Arrange
+            UserRequest? userRequest = null;
+            Guid id = Guid.NewGuid();
 
-        
+            // Act + Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+            {
+                await _userService.UpdateEmployeeDetails(userRequest,id);
+            });
+        }
+
+        /// <summary>
+        /// Update Employee details with User Not found
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task UpdateEmployeeDetails_UserNotFound_ToBeArgumentException()
+        {
+            // Arrange
+            UserRequest userRequest = _fixture.Build<UserRequest>()
+            .With(x => x.Email, "sky@gmail.com")
+            .Create();
+            Guid id = Guid.NewGuid();
+
+            // Act + Assert
+            await Assert.ThrowsAsync<ArgumentException>(async () =>
+            {
+                await _userService.UpdateEmployeeDetails(userRequest, id);
+            });
+
+        }
+
+        /// <summary>
+        /// Update Employee details with User Name already exists
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task UpdateEmployeeDetails_UserNameAlreadyExists_ToBeArgumentException()
+        {
+            // Arrange
+            RoleRequest roleRequest = _fixture.Build<RoleRequest>()
+            .With(r => r.Name, UserRoles.Employee.ToString())
+            .Create();
+
+            RoleResponse roleResponse = await _roleService.CreateRole(roleRequest);
+
+            UserRequest userRequest1 = _fixture.Build<UserRequest>()
+            .With(x => x.Email, "sky@gmail.com")
+            .With(x => x.RoleId, roleResponse.Id)
+            .Create();
+
+            UserResponse userResponse1 = await _userService.RegisterEmployee(userRequest1);
+
+            UserRequest userRequest2 = _fixture.Build<UserRequest>()
+            .With(x => x.Email, "sk@gmail.com")
+            .With(x => x.RoleId, roleResponse.Id)
+            .Create();
+
+            UserResponse userResponse2 = await _userService.RegisterEmployee(userRequest2);
+
+            userRequest2.Username = userRequest1.Username;
+
+            // Act + Assert
+            await Assert.ThrowsAsync<ArgumentException>(async () =>
+            {
+                await _userService.UpdateEmployeeDetails(userRequest2, userResponse2.Id);
+            });
+        }
+
+        /// <summary>
+        /// Update Employee details with Valid Request
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task UpdateEmployeeDetails_ValidRequest_ToBeSuccess()
+        {
+            // Arrange
+
+            RoleRequest roleRequest = _fixture.Build<RoleRequest>()
+            .With(r => r.Name, UserRoles.Employee.ToString())
+            .Create();
+
+            RoleResponse roleResponse = await _roleService.CreateRole(roleRequest);
+
+            UserRequest userRequest = _fixture.Build<UserRequest>()
+            .With(x => x.Email, "sky@gmail.com")
+            .With(x => x.RoleId, roleResponse.Id)
+            .Create();
+
+            UserResponse userResponse = await _userService.RegisterEmployee(userRequest);
+
+            userRequest.Username = "sky1";
+            userRequest.FirstName = "Sk";
+            userRequest.LastName = "Y";
+
+            // Act
+            UserResponse userResponse_FromTest = await _userService.UpdateEmployeeDetails(userRequest, userResponse.Id); 
+
+            // Assert
+            Assert.NotNull(userResponse_FromTest);
+            Assert.Equal(userResponse.Email,userResponse_FromTest.Email);
+            Assert.Equal(userResponse.Id, userResponse_FromTest.Id);
+
+        }
         #endregion
 
-    }
+        #region Delete Employee
+
+        /// <summary>
+        /// Delete Employee with Empty Id
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task DeleteEmployee_EmptyId_ToBeArgumentException()
+        {
+            // Act + Assert
+            await Assert.ThrowsAsync<ArgumentException>(async () =>
+            {
+                await _userService.DeleteUser(Guid.Empty);
+            });
+        }
+
+        /// <summary>
+        /// Delete Employee with User Not Found
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task DeleteEmployee_UserNotFound_ToBeFalse()
+        {
+            // Arrange
+            Guid Id = Guid.NewGuid();
+
+            // Act
+            bool isDeleted = await _userService.DeleteUser(Id);
+
+            // Assert
+            Assert.False(isDeleted);
+        }
+
+
+        /// <summary>
+        /// Delete an Employee when user is found
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task DeleteEmployee_ValidUser_ToBeSuccess()
+        {
+            // Arrange
+            RoleRequest roleRequest = _fixture.Build<RoleRequest>()
+            .With(r => r.Name, UserRoles.Employee.ToString())
+            .Create();
+
+            RoleResponse roleResponse = await _roleService.CreateRole(roleRequest);
+
+            UserRequest userRequest = _fixture.Build<UserRequest>()
+            .With(x => x.Email, "s@gmail.com")
+            .With(t => t.RoleId, roleResponse.Id)
+            .Create();
+
+            UserResponse userResponse = await _userService.RegisterEmployee(userRequest);
+
+            // Act
+
+            bool isDeleted = await _userService.DeleteUser(userResponse.Id);
+
+            // Assert
+            Assert.True(isDeleted);
+
+        }
+
+         #endregion
+
+        }
 }

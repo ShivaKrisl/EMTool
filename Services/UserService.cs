@@ -217,7 +217,7 @@ namespace Services
         /// <param name="userRequest"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<UserResponse> UpdateEmployeeDetails(UserRequest userRequest, Guid userId)
+        public async Task<UserResponse> UpdateEmployeeDetails(UserRequest userRequest, Guid userId)
         {
             if (userRequest == null)
             {
@@ -243,19 +243,12 @@ namespace Services
                 throw new ArgumentException("Username already exists", nameof(userRequest.Username));
             }
 
-            // Check Email already exists
-            if (_users.Any(u => u.Email == userRequest.Email && u.Id != userId))
-            {
-                throw new ArgumentException("Email already exists", nameof(userRequest.Email));
-            }
-
             userToUpdate.FirstName = userRequest.FirstName;
-            userToUpdate.Email = userRequest.Email;
             userToUpdate.Username = userRequest.Username;
             userToUpdate.LastName = userRequest.LastName;
             userToUpdate.UpdatedAt = DateTime.UtcNow;
 
-            return Task.FromResult(userToUpdate.ToUserResponse());
+            return userToUpdate.ToUserResponse();
         }
 
         /// <summary>
@@ -265,7 +258,7 @@ namespace Services
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public Task<bool> DeleteUser(Guid userId)
+        public async Task<bool> DeleteUser(Guid userId)
         {
             if (userId == Guid.Empty)
             {
@@ -276,10 +269,10 @@ namespace Services
 
             if(userToDelete == null)
             {
-                return Task.FromResult(false);
+                return false;
             }
             _users.Remove(userToDelete);
-            return Task.FromResult(true);
+            return true;
         }
         
     }
