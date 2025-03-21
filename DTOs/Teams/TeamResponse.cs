@@ -31,6 +31,20 @@ namespace DTOs.Teams
 
         [Required]
         public string ManagerName { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            if(obj == null || obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+            TeamResponse teamResponse = (TeamResponse)obj;
+
+            return (teamResponse.Id == this.Id
+                && teamResponse.TeamName == this.TeamName
+                && teamResponse.ManagerId == this.ManagerId
+                && teamResponse.ManagerName == this.ManagerName);
+        }
     }
 
     public static class TeamResponseExtensions

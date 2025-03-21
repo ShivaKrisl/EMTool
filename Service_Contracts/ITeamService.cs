@@ -21,14 +21,14 @@ namespace Service_Contracts
         /// </summary>
         /// <param name="teamName"></param>
         /// <returns></returns>
-        public Task<TeamResponse> GetTeamByTeamName(string? teamName);
+        public Task<TeamResponse?> GetTeamByTeamName(string? teamName);
 
         /// <summary>
         /// Get a team by team id
         /// </summary>
         /// <param name="TeamId"></param>
         /// <returns></returns>
-        public Task<TeamResponse> GetTeamById(Guid TeamId);
+        public Task<TeamResponse?> GetTeamById(Guid TeamId);
 
         /// <summary>
         /// Update a team by team id
@@ -43,5 +43,12 @@ namespace Service_Contracts
         /// <param name="teamRequest"></param>
         /// <returns></returns>
         public Task<bool> DeleteTeam(Guid TeamId);
+
+        /// <summary>
+        /// Get all teams Under a Manager
+        /// </summary>
+        /// <param name="ManagerId"></param>
+        /// <returns></returns>
+        public Task<List<TeamResponse>> GetAllTeamsOfManager(Guid ManagerId);
     }
 }
