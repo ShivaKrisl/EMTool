@@ -30,6 +30,12 @@ namespace DTOs.TeamMembers
         public Guid UserId { get; set; }
 
         /// <summary>
+        /// Manager Id
+        /// </summary>
+        [Required]
+        public Guid AddedByUserId { get; set; }
+
+        /// <summary>
         /// User Name
         /// </summary>
         [Required]
@@ -54,6 +60,32 @@ namespace DTOs.TeamMembers
         [Required]
         public User User { get; set; }
 
+        /// <summary>
+        /// Manager
+        /// </summary>
+        [Required]
+        public User AddedBy { get; set; }
+
+
+        /// <summary>
+        /// Added Date
+        /// </summary>
+        [Required]
+        public DateTime AddedOn { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            if(obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            TeamMemberResponse teamMemberResponse = (TeamMemberResponse)obj;
+
+            return Id == teamMemberResponse.Id && TeamId == teamMemberResponse.TeamId && UserId == teamMemberResponse.UserId && UserName == teamMemberResponse.UserName && TeamName == teamMemberResponse.TeamName && Team == teamMemberResponse.Team && User == teamMemberResponse.User && teamMemberResponse.AddedByUserId == AddedByUserId && teamMemberResponse.AddedBy == AddedBy;
+
+        }
+
     }
 
     public static class TeamMemberResponseExtensions
@@ -69,6 +101,9 @@ namespace DTOs.TeamMembers
                 TeamName = teamMember.Team.TeamName,
                 Team = teamMember.Team,
                 User = teamMember.User,
+                AddedByUserId = teamMember.AddedById,
+                AddedBy = teamMember.AddedBy,
+                AddedOn = teamMember.AddedOn,
             };
         }
 

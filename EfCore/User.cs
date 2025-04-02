@@ -81,6 +81,9 @@ namespace EfCore
         public ICollection<WorkAttachment> workAttachments { get; set; } = new List<WorkAttachment>();
 
         public ICollection<TeamMember> TeamMembers { get; set; } = new List<TeamMember>();
+
+        public ICollection<TeamMember> AddedTeamMembers { get; set; } = new List<TeamMember>();
+
         public ICollection<PullRequest> PullRequests { get; set; } = new List<PullRequest>();
         public ICollection<WorkComment> Comments { get; set; } = new List<WorkComment>();
         public ICollection<Review> ReviewsGiven { get; set; } = new List<Review>();

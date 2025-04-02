@@ -22,6 +22,12 @@ namespace DTOs.TeamMembers
         [Required]
         public Guid UserId { get; set; }
 
+        /// <summary>
+        /// Manager Id
+        /// </summary>
+        [Required]
+        public Guid AddedByUserId { get; set; }
+
 
         /// <summary>
         /// Convert TeamMemberRequest to TeamMember
@@ -32,7 +38,9 @@ namespace DTOs.TeamMembers
             return new TeamMember()
             {
                 TeamId = TeamId,
-                UserId = UserId, 
+                UserId = UserId,
+                AddedById = AddedByUserId,
+               
             };
         }
     }

@@ -50,6 +50,12 @@ namespace EfCore
                 .HasForeignKey(tm => tm.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<TeamMember>()
+            .HasOne(tm => tm.AddedBy)
+            .WithMany(u => u.AddedTeamMembers)  // Use the new collection in User
+            .HasForeignKey(tm => tm.AddedById)
+            .OnDelete(DeleteBehavior.Restrict);
+
             // 🔹 Team - TeamMembers (Restrict Team Deletion)
             modelBuilder.Entity<TeamMember>()
                 .HasOne(tm => tm.Team)

@@ -34,14 +34,58 @@ namespace Services
         {
             if(teamMemberRequest == null)
             {
-                throw new ArgumentNullException(nameof(teamMemberRequest));
+                throw new ArgumentNullException();
             }
 
             bool isModelValid = ValidationHelper.IsStateValid(teamMemberRequest);
             if (!isModelValid)
             {
-                throw new ArgumentException("Invalid Team Member Request");
+                throw new ArgumentException("Invalid Team Member Request", nameof(teamMemberRequest));
             }
+
+            // Check team exists or not
+            TeamResponse teamResponse = await _teamService.GetTeamById(teamMemberRequest.TeamId);
+            if (teamResponse == null)
+            {
+                throw new ArgumentException("Team does not exist", nameof(teamResponse));
+            }
+
+            // Check manager exists and part of the same team
+            UserResponse? managerResponse = await _userService.GetEmployeeById(teamMemberRequest.AddedByUserId);
+
+            if (managerResponse == null)
+            {
+                throw new ArgumentException("Manager Not Found", nameof(managerResponse));
+            }
+
+            RoleResponse? managerRoleResponse = await _roleService.GetRoleById(managerResponse.RoleId);
+
+            if (managerRoleResponse ==null || managerRoleResponse.Name != UserRoles.Manager.ToString())
+            {
+                throw new ArgumentException("Only Manager can Add a member to Team", nameof(managerResponse));
+            }
+
+            if(managerResponse.Id != teamResponse.ManagerId)
+            {
+                throw new ArgumentException("Only Same Manager of Team can Add a member to Team", nameof(managerResponse));
+            }
+
+            // Check if Employee exists
+
+            UserResponse? response = await _userService.GetEmployeeById(teamMemberRequest.UserId);
+            if (response == null)
+            {
+                throw new ArgumentException("User does not exist", nameof(response));
+            }
+
+            RoleResponse? roleResponse = await _roleService.GetRoleById(response.RoleId);
+
+            if (roleResponse == null || roleResponse.Name != UserRoles.Employee.ToString())
+            {
+                throw new ArgumentException("Only Employee can be added to Team", nameof(roleResponse));
+            }
+
+            User user = response.ToUser(roleResponse.ToRole());
 
             // Check if he is already added to the team
             bool memberExist = _teamMembers.Any(m => m.UserId == teamMemberRequest.UserId && m.TeamId == teamMemberRequest.TeamId);
@@ -52,33 +96,10 @@ namespace Services
 
             TeamMember teamMember = teamMemberRequest.ToTeamMember();
             teamMember.Id = Guid.NewGuid();
-
-            UserResponse response = await _userService.GetEmployeeById(teamMemberRequest.UserId);
-            if (response == null)
-            {
-                throw new ArgumentException("User does not exist");
-            }
-
-            RoleResponse? roleResponse = await _roleService.GetRoleById(response.RoleId);
-
-            if (roleResponse == null || roleResponse.Name != UserRoles.Manager.ToString())
-            {
-                throw new ArgumentException("Only Manager can add team member to Team");
-            }
-
-            User user = response.ToUser(roleResponse.ToRole());
             teamMember.User = user;
-
-            TeamResponse teamResponse = await _teamService.GetTeamById(teamMemberRequest.TeamId);
-            if (teamResponse == null)
-            {
-                throw new ArgumentException("Team does not exist");
-            }
-
-            if(teamResponse.ManagerId != response.Id)
-            {
-                throw new ArgumentException("Only Same Team Manager can add a team member");
-            }
+            teamMember.AddedById = managerResponse.Id;
+            teamMember.AddedBy = managerResponse.ToUser(managerRoleResponse.ToRole());
+            teamMember.AddedOn = DateTime.UtcNow;
 
             Team team = teamResponse.ToTeam(user);
             teamMember.Team = team;
@@ -95,16 +116,20 @@ namespace Services
         /// <param name="teamId"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<List<TeamMemberResponse>> GetAllTeamMembers(Guid teamId)
+        public async Task<List<TeamMemberResponse>> GetAllTeamMembers(Guid teamId)
         {
             if(teamId == Guid.Empty)
             {
-                return Task.FromResult(new List<TeamMemberResponse>());
+                throw new ArgumentException("Invalid Team Id", nameof(teamId));
             }
 
             List<TeamMember> teamMembers = _teamMembers.Where(t => t.TeamId == teamId).ToList();
             List<TeamMemberResponse> teamMemberResponses = teamMembers.Select(t => t.ToTeamMemberResponse()).ToList();
-            return Task.FromResult(teamMemberResponses);
+            if(teamMemberResponses.Count == 0)
+            {
+                return new List<TeamMemberResponse>();
+            }
+            return teamMemberResponses;
         }
 
         /// <summary>
@@ -112,11 +137,11 @@ namespace Services
         /// </summary>
         /// <param name="teamId"></param>
         /// <returns></returns>
-        public Task<TeamMemberResponse>? GetTeamMemberByUserId(Guid userId)
+        public async Task<TeamMemberResponse?> GetTeamMemberByUserId(Guid userId)
         {
             if (userId == Guid.Empty)
             {
-                throw new ArgumentNullException(nameof(userId));
+                throw new ArgumentException("Invalid Employee Id",nameof(userId));
             }
 
             TeamMember? teamMember = _teamMembers.FirstOrDefault(t => t.UserId == userId);
@@ -126,7 +151,7 @@ namespace Services
                 return null;
             }
 
-            return Task.FromResult(teamMember.ToTeamMemberResponse());
+            return teamMember.ToTeamMemberResponse();
 
         }
 
@@ -137,20 +162,20 @@ namespace Services
         /// <param name="teamMemberId"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<bool> DeleteTeamMember(Guid teamMemberId)
+        public async Task<bool> DeleteTeamMember(Guid teamMemberId)
         {
             if(teamMemberId == Guid.Empty)
             {
-               return Task.FromResult(false);
+                throw new ArgumentException("Invalid Team member Id", nameof(teamMemberId));
             }
 
             TeamMember? teamMember = _teamMembers.FirstOrDefault(t => t.Id == teamMemberId);
             if (teamMember == null)
             {
-                return Task.FromResult(false);
+                return false;
             }
             _teamMembers.Remove(teamMember);
-            return Task.FromResult(true);
+            return true;
         }
     }
 }
